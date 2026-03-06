@@ -54,6 +54,18 @@ export default function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          {/* Search / Cmd+K */}
+          <button
+            onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
+            className="hidden sm:flex items-center gap-2 h-8 px-3 text-xs text-[var(--color-text-secondary)] bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg hover:border-brand-500/50 transition-colors"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span>검색</span>
+            <kbd className="font-mono text-[10px] px-1 py-0.5 bg-[var(--color-bg)] border border-[var(--color-border)] rounded">⌘K</kbd>
+          </button>
+
           {/* Theme Toggle */}
           <button
             onClick={toggle}

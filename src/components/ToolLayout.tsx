@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { tools } from '@/lib/tools';
+import FavoriteButton from './FavoriteButton';
+import RecentToolTracker from './RecentToolTracker';
 
 interface ToolLayoutProps {
   toolId: string;
@@ -13,6 +15,8 @@ export default function ToolLayout({ toolId, children, faq }: ToolLayoutProps) {
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
+      <RecentToolTracker toolId={toolId} />
+
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] mb-6">
         <Link href="/" className="hover:text-[var(--color-text)] transition-colors">
@@ -24,9 +28,12 @@ export default function ToolLayout({ toolId, children, faq }: ToolLayoutProps) {
 
       {/* Title */}
       <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">
-          {tool?.name}
-        </h1>
+        <div className="flex items-center gap-2 mb-2">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+            {tool?.name}
+          </h1>
+          <FavoriteButton toolId={toolId} />
+        </div>
         <p className="text-[var(--color-text-secondary)]">{tool?.description}</p>
       </div>
 

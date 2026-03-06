@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import CommandPalette from '@/components/CommandPalette';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID;
@@ -38,8 +39,6 @@ export default function RootLayout({
   return (
     <html lang="ko" className="dark" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" />
-
         {/* Google Analytics */}
         {GA_ID && (
           <>
@@ -72,6 +71,7 @@ export default function RootLayout({
           <Header />
           <div className="flex-1">{children}</div>
           <Footer />
+          <CommandPalette />
         </ThemeProvider>
       </body>
     </html>
