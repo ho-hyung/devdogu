@@ -1,80 +1,100 @@
-# DevDogu 🧰
+# DevDogu
 
-개발자를 위한 무료 온라인 도구 모음
+**23 browser-only developer tools. No data sent to servers.**
 
-## 시작하기
+[devdogu.vercel.app](https://devdogu.vercel.app) | [Report Bug](https://github.com/your-username/devdogu/issues)
 
-### 1. 의존성 설치
+---
+
+## Why DevDogu?
+
+- **Privacy first** - All tools run 100% client-side. Your data never leaves the browser.
+- **All-in-one** - 23 essential dev tools in one place. No more bookmarking 20 different sites.
+- **Fast** - Static site, loads instantly. No spinners, no waiting.
+- **Korean UI** - One of the few developer tool collections with native Korean interface.
+- **Open source** - MIT licensed. Contribute or fork freely.
+
+---
+
+## Tools
+
+### Formatters & Validators
+
+| Tool | Description |
+|------|-------------|
+| [JSON Formatter](https://devdogu.vercel.app/json-formatter/) | Format & validate JSON |
+| [SQL Formatter](https://devdogu.vercel.app/sql-formatter/) | Format SQL queries |
+| [Regex Tester](https://devdogu.vercel.app/regex-tester/) | Test regular expressions in real-time |
+| [Diff Checker](https://devdogu.vercel.app/diff-checker/) | Compare two texts visually |
+| [Markdown Preview](https://devdogu.vercel.app/markdown-preview/) | Live Markdown preview |
+
+### Encoders & Decoders
+
+| Tool | Description |
+|------|-------------|
+| [Base64](https://devdogu.vercel.app/base64/) | Encode/decode Base64 |
+| [URL Encoder](https://devdogu.vercel.app/url-encoder/) | Encode/decode URLs |
+| [JWT Decoder](https://devdogu.vercel.app/jwt-decoder/) | Decode JWT tokens |
+
+### Generators
+
+| Tool | Description |
+|------|-------------|
+| [UUID/ULID Generator](https://devdogu.vercel.app/id-generator/) | Generate UUID v4, ULID, NanoID |
+| [Hash Generator](https://devdogu.vercel.app/hash-generator/) | Generate MD5, SHA-1, SHA-256 hashes |
+| [QR Code Generator](https://devdogu.vercel.app/qr-generator/) | Generate QR codes |
+| [Lorem Ipsum](https://devdogu.vercel.app/lorem-ipsum/) | Generate placeholder text |
+| [Cron Builder](https://devdogu.vercel.app/cron-builder/) | Build cron expressions with GUI |
+
+### Converters
+
+| Tool | Description |
+|------|-------------|
+| [Unix Timestamp](https://devdogu.vercel.app/timestamp/) | Convert Unix timestamps |
+| [Color Converter](https://devdogu.vercel.app/color-converter/) | Convert between HEX, RGB, HSL |
+| [JSON/YAML](https://devdogu.vercel.app/json-yaml/) | Convert between JSON and YAML |
+| [Text Case](https://devdogu.vercel.app/text-case/) | Convert camelCase, snake_case, etc. |
+
+### Cheatsheets
+
+| Tool | Description |
+|------|-------------|
+| [Git](https://devdogu.vercel.app/git-cheatsheet/) | Git commands reference |
+| [Docker](https://devdogu.vercel.app/docker-cheatsheet/) | Docker & Compose reference |
+| [HTTP Status](https://devdogu.vercel.app/http-status/) | HTTP status codes reference |
+| [Cron](https://devdogu.vercel.app/cron-cheatsheet/) | Cron expression guide |
+| [Linux](https://devdogu.vercel.app/linux-cheatsheet/) | Essential Linux commands |
+| [Regex](https://devdogu.vercel.app/regex-cheatsheet/) | Regex syntax reference |
+
+---
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router, static export)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Fonts**: Pretendard (Korean) + JetBrains Mono (code)
+- **Deploy**: Vercel
+
+## Getting Started
 
 ```bash
 npm install
+npm run dev     # http://localhost:3000
+npm run build   # Static build
 ```
 
-### 2. 개발 서버 실행
+## Adding a New Tool
 
-```bash
-npm run dev
-```
+1. Add tool entry to `src/lib/tools.ts`
+2. Create `src/app/[tool-name]/page.tsx` (server component with metadata)
+3. Create `src/app/[tool-name]/[ToolName]Client.tsx` (client component)
+4. Add URL to `public/sitemap.xml`
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인하세요.
+## Contributing
 
-### 3. 빌드 & 배포
+Contributions are welcome! Feel free to open issues or submit PRs.
 
-```bash
-npm run build
-```
-
-## 기술 스택
-
-- **프레임워크**: Next.js 14 (App Router)
-- **스타일링**: Tailwind CSS
-- **언어**: TypeScript
-- **폰트**: Pretendard (한국어) + JetBrains Mono (코드)
-- **배포**: Vercel
-
-## 프로젝트 구조
-
-```
-src/
-├── app/                    # 페이지 (App Router)
-│   ├── layout.tsx          # 루트 레이아웃
-│   ├── page.tsx            # 홈페이지
-│   ├── json-formatter/     # JSON 포매터
-│   ├── base64/             # Base64 인코더/디코더
-│   ├── url-encoder/        # URL 인코더/디코더
-│   ├── regex-tester/       # 정규식 테스터 (TODO)
-│   ├── jwt-decoder/        # JWT 디코더 (TODO)
-│   ├── timestamp/          # Unix 타임스탬프 (TODO)
-│   ├── about/              # 소개 페이지
-│   └── privacy/            # 개인정보처리방침
-├── components/             # 공통 컴포넌트
-│   ├── Header.tsx
-│   ├── Footer.tsx
-│   ├── ThemeProvider.tsx
-│   └── ToolLayout.tsx      # 도구 페이지 래퍼
-├── lib/                    # 유틸리티
-│   ├── tools.ts            # 도구 목록 설정
-│   └── metadata.ts         # SEO 메타데이터 헬퍼
-└── app/globals.css         # 글로벌 스타일
-```
-
-## 도구 추가 방법
-
-1. `src/lib/tools.ts`에 도구 정보 추가
-2. `src/app/[tool-name]/page.tsx` 생성 (서버 컴포넌트, 메타데이터)
-3. `src/app/[tool-name]/[ToolName]Client.tsx` 생성 (클라이언트 컴포넌트)
-4. `public/sitemap.xml`에 URL 추가
-
-## Vercel 배포
-
-```bash
-# Vercel CLI 설치
-npm i -g vercel
-
-# 배포
-vercel
-```
-
-## 라이센스
+## License
 
 MIT
