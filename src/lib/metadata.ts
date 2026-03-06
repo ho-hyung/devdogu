@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 const SITE_NAME = 'DevDogu';
-const SITE_URL = 'https://devdogu.kr'; // 실제 도메인으로 변경
+const SITE_URL = 'https://devdogu.vercel.app';
 const SITE_DESCRIPTION = '개발자를 위한 무료 온라인 도구 모음 — JSON 포매터, Base64 인코더, 정규식 테스터 등 매일 쓰는 도구를 한 곳에서.';
 
 export function createMetadata({

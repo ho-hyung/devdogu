@@ -1,112 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://devdogu.kr</loc>
+    <loc>https://devdogu.vercel.app</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/json-formatter</loc>
+    <loc>https://devdogu.vercel.app/json-formatter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/base64</loc>
+    <loc>https://devdogu.vercel.app/base64</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/url-encoder</loc>
+    <loc>https://devdogu.vercel.app/url-encoder</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/regex-tester</loc>
+    <loc>https://devdogu.vercel.app/regex-tester</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/jwt-decoder</loc>
+    <loc>https://devdogu.vercel.app/jwt-decoder</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/timestamp</loc>
+    <loc>https://devdogu.vercel.app/timestamp</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/id-generator</loc>
+    <loc>https://devdogu.vercel.app/id-generator</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/hash-generator</loc>
+    <loc>https://devdogu.vercel.app/hash-generator</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/diff-checker</loc>
+    <loc>https://devdogu.vercel.app/diff-checker</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/color-converter</loc>
+    <loc>https://devdogu.vercel.app/color-converter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/markdown-preview</loc>
+    <loc>https://devdogu.vercel.app/markdown-preview</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/qr-generator</loc>
+    <loc>https://devdogu.vercel.app/qr-generator</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/sql-formatter</loc>
+    <loc>https://devdogu.vercel.app/sql-formatter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/git-cheatsheet</loc>
+    <loc>https://devdogu.vercel.app/git-cheatsheet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/docker-cheatsheet</loc>
+    <loc>https://devdogu.vercel.app/docker-cheatsheet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/http-status</loc>
+    <loc>https://devdogu.vercel.app/http-status</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/cron-cheatsheet</loc>
+    <loc>https://devdogu.vercel.app/cron-cheatsheet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/linux-cheatsheet</loc>
+    <loc>https://devdogu.vercel.app/linux-cheatsheet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/regex-cheatsheet</loc>
+    <loc>https://devdogu.vercel.app/regex-cheatsheet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/about</loc>
+    <loc>https://devdogu.vercel.app/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://devdogu.kr/privacy</loc>
+    <loc>https://devdogu.vercel.app/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://devdogu.kr/sitemap.xml
+Sitemap: https://devdogu.vercel.app/sitemap.xml

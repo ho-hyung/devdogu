@@ -8,7 +8,7 @@ type ErrorLevel = 'L' | 'M' | 'Q' | 'H';
 const ERROR_LABELS: Record<ErrorLevel, string> = { L: 'L (7%)', M: 'M (15%)', Q: 'Q (25%)', H: 'H (30%)' };
 
 export default function QrGeneratorClient() {
-  const [text, setText] = useState('https://devdogu.kr');
+  const [text, setText] = useState('https://devdogu.vercel.app');
   const [size, setSize] = useState(256);
   const [errorLevel, setErrorLevel] = useState<ErrorLevel>('M');
   const [dataUrl, setDataUrl] = useState('');
