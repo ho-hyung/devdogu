@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://devdogu.vercel.app'),
   verification: {
     google: '4BwlWYrmbmphbhQPFMvskd_odtl7ytDqCp8FOgb-FL0',
+    other: {
+      'naver-site-verification': ['0cd37ad430edd38f482975b1ac040f23e62b1c9d'],
+    },
   },
   openGraph: {
     title: 'DevDogu — 개발자를 위한 무료 온라인 도구 모음',
