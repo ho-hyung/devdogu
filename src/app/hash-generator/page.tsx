@@ -1,0 +1,34 @@
+import { createMetadata } from '@/lib/metadata';
+import HashGeneratorClient from './HashGeneratorClient';
+import ToolLayout from '@/components/ToolLayout';
+
+export const metadata = createMetadata({
+  title: '해시 생성기 (MD5/SHA-256)',
+  description:
+    '온라인 해시 생성기 — MD5, SHA-1, SHA-256, SHA-512 해시를 즉시 생성합니다. 파일 무결성 검증, 체크섬 확인에 활용하세요.',
+  path: '/hash-generator',
+  keywords: ['해시 생성기', 'MD5', 'SHA-256', 'SHA-1', 'SHA-512', 'hash generator', '체크섬'],
+});
+
+const faq = [
+  {
+    q: '해시 함수란 무엇인가요?',
+    a: '해시 함수는 임의 길이의 데이터를 고정 길이의 값으로 변환하는 함수입니다. 같은 입력은 항상 같은 출력을 내며, 출력에서 원본을 복원할 수 없는 단방향 함수입니다.',
+  },
+  {
+    q: 'MD5와 SHA-256의 차이는 무엇인가요?',
+    a: 'MD5는 128비트(32자) 해시를 생성하며 속도가 빠르지만 보안 용도로는 권장되지 않습니다. SHA-256은 256비트(64자) 해시를 생성하며 현재 보안 용도로 널리 사용됩니다.',
+  },
+  {
+    q: '입력 데이터가 서버로 전송되나요?',
+    a: '아니요. 모든 해시 계산은 브라우저의 Web Crypto API를 사용하여 클라이언트에서 처리됩니다. 데이터는 서버로 전송되지 않습니다.',
+  },
+];
+
+export default function HashGeneratorPage() {
+  return (
+    <ToolLayout toolId="hash-generator" faq={faq}>
+      <HashGeneratorClient />
+    </ToolLayout>
+  );
+}

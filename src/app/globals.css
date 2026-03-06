@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pretendard 한국어 폰트 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+/* JetBrains Mono - 코드용 */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --color-bg: #ffffff;
+    --color-surface: #f8f9fb;
+    --color-border: #e9ecef;
+    --color-text: #111214;
+    --color-text-secondary: #6b7280;
+    --color-accent: #338dff;
+  }
+
+  .dark {
+    --color-bg: #0a0b0d;
+    --color-surface: #111214;
+    --color-border: #2c2e33;
+    --color-text: #f1f3f5;
+    --color-text-secondary: #9ca3af;
+    --color-accent: #59b0ff;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[var(--color-bg)] text-[var(--color-text)] font-sans antialiased;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  /* 코드 에디터 스타일 */
+  .editor-area {
+    @apply font-mono text-sm leading-relaxed;
+    tab-size: 2;
+  }
+
+  /* 스크롤바 커스터마이징 */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-surface-300 dark:bg-surface-700 rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-surface-300 dark:bg-surface-700;
+  }
+}
+
+@layer components {
+  .tool-card {
+    @apply bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 
+           hover:border-brand-400/50 hover:shadow-lg hover:shadow-brand-500/5
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 
+           bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg
+           transition-colors duration-150 text-sm;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 
+           bg-[var(--color-surface)] border border-[var(--color-border)]
+           hover:bg-surface-200 dark:hover:bg-surface-800
+           font-medium rounded-lg transition-colors duration-150 text-sm;
+  }
+
+  /* Markdown Preview */
+  .markdown-body h1 { @apply text-2xl font-bold mt-6 mb-4 pb-2 border-b border-[var(--color-border)]; }
+  .markdown-body h2 { @apply text-xl font-bold mt-5 mb-3 pb-1 border-b border-[var(--color-border)]; }
+  .markdown-body h3 { @apply text-lg font-semibold mt-4 mb-2; }
+  .markdown-body h4 { @apply text-base font-semibold mt-3 mb-1; }
+  .markdown-body p { @apply my-3 leading-relaxed; }
+  .markdown-body a { @apply text-brand-500 hover:underline; }
+  .markdown-body strong { @apply font-bold; }
+  .markdown-body em { @apply italic; }
+  .markdown-body del { @apply line-through text-[var(--color-text-secondary)]; }
+  .markdown-body code { @apply bg-[var(--color-bg)] px-1.5 py-0.5 rounded text-sm font-mono; }
+  .markdown-body pre { @apply bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg p-4 my-4 overflow-x-auto; }
+  .markdown-body pre code { @apply bg-transparent p-0; }
+  .markdown-body ul { @apply list-disc pl-6 my-3; }
+  .markdown-body ol { @apply list-decimal pl-6 my-3; }
+  .markdown-body li { @apply my-1; }
+  .markdown-body blockquote { @apply border-l-4 border-brand-500/30 pl-4 my-4 text-[var(--color-text-secondary)] italic; }
+  .markdown-body hr { @apply my-6 border-[var(--color-border)]; }
+  .markdown-body img { @apply max-w-full rounded-lg my-4; }
+  .markdown-body table { @apply w-full border-collapse my-4; }
+  .markdown-body th,
+  .markdown-body td { @apply border border-[var(--color-border)] px-3 py-2 text-sm; }
+  .markdown-body th { @apply bg-[var(--color-bg)] font-semibold; }
+
+  .input-area {
+    @apply w-full min-h-[200px] p-4 bg-[var(--color-surface)] border border-[var(--color-border)]
+           rounded-lg font-mono text-sm resize-y
+           focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500
+           placeholder:text-[var(--color-text-secondary)]
+           custom-scrollbar;
+  }
+}

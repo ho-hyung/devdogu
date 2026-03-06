@@ -1,0 +1,33 @@
+import { createMetadata } from '@/lib/metadata';
+import HttpStatusClient from './HttpStatusClient';
+import ToolLayout from '@/components/ToolLayout';
+
+export const metadata = createMetadata({
+  title: 'HTTP 상태코드 정리 치트시트',
+  description:
+    'HTTP 상태코드 치트시트 — 1xx 정보, 2xx 성공, 3xx 리다이렉션, 4xx 클라이언트 오류, 5xx 서버 오류까지 모든 HTTP 상태코드를 카테고리별로 정리하고 상세 설명합니다.',
+  path: '/http-status',
+  keywords: [
+    'HTTP 상태코드', 'HTTP status code', '404', '500', '200', '301', '302',
+    '401', '403', '429', '502', '503', 'REST API 상태코드', 'HTTP 응답코드',
+    '상태코드 종류', 'HTTP 에러코드', '리다이렉트 코드',
+  ],
+});
+
+const faq = [
+  { q: 'HTTP 상태코드란 무엇인가요?', a: 'HTTP 상태코드는 클라이언트의 요청에 대한 서버의 응답 상태를 나타내는 3자리 숫자 코드입니다. 1xx(정보), 2xx(성공), 3xx(리다이렉션), 4xx(클라이언트 오류), 5xx(서버 오류)의 5개 카테고리로 분류됩니다.' },
+  { q: '301과 302 리다이렉트의 차이는 무엇인가요?', a: '301(Moved Permanently)은 영구 리다이렉트로 검색 엔진이 새 URL을 인덱싱합니다. 302(Found)는 임시 리다이렉트로 원래 URL이 검색 엔진에 유지됩니다. SEO에서 중요한 차이입니다.' },
+  { q: '401과 403의 차이는 무엇인가요?', a: '401(Unauthorized)은 인증이 필요하거나 인증에 실패한 경우입니다. 로그인하면 해결됩니다. 403(Forbidden)은 인증은 되었지만 해당 리소스에 대한 권한이 없는 경우입니다. 관리자 페이지에 일반 사용자가 접근하는 경우 등.' },
+  { q: '404와 410의 차이는 무엇인가요?', a: '404(Not Found)는 리소스를 찾을 수 없다는 일반적인 상태입니다. 410(Gone)은 리소스가 의도적으로 영구 삭제되었음을 명시합니다. 검색 엔진은 410을 받으면 더 빨리 인덱스에서 제거합니다.' },
+  { q: '429 Too Many Requests는 어떻게 처리하나요?', a: '서버의 Rate Limiting에 걸린 상태입니다. Retry-After 헤더를 확인하고 해당 시간 후 재시도하세요. API 클라이언트에서는 지수 백오프(Exponential Backoff) 전략을 구현하는 것이 좋습니다.' },
+  { q: '502와 503의 차이는 무엇인가요?', a: '502(Bad Gateway)는 프록시/로드밸런서가 상위 서버에서 잘못된 응답을 받은 경우입니다. 503(Service Unavailable)은 서버가 과부하, 유지보수 등으로 일시적으로 요청을 처리할 수 없는 상태입니다.' },
+  { q: 'REST API에서 가장 많이 사용하는 상태코드는 무엇인가요?', a: 'GET 성공: 200, POST 생성 성공: 201, DELETE 성공: 204, 잘못된 요청: 400, 인증 실패: 401, 권한 없음: 403, 리소스 없음: 404, 유효성 검증 실패: 422, 서버 오류: 500이 가장 자주 사용됩니다.' },
+];
+
+export default function HttpStatusPage() {
+  return (
+    <ToolLayout toolId="http-status" faq={faq}>
+      <HttpStatusClient />
+    </ToolLayout>
+  );
+}
