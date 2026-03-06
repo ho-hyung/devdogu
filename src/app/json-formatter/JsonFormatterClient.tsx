@@ -4,13 +4,19 @@ import { useState, useCallback } from 'react';
 
 type IndentSize = 2 | 4;
 
-export default function JsonFormatterClient() {
+interface JsonFormatterClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function JsonFormatterClient({ dict }: JsonFormatterClientProps) {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [indent, setIndent] = useState<IndentSize>(2);
   const [copied, setCopied] = useState(false);
   const [stats, setStats] = useState<{ keys: number; depth: number; size: string } | null>(null);
+
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
 
   const getDepth = (obj: unknown, current = 0): number => {
     if (obj === null || typeof obj !== 'object') return current;
@@ -50,7 +56,7 @@ export default function JsonFormatterClient() {
         size: formatSize(new Blob([formatted]).size),
       });
     } catch (e) {
-      const msg = e instanceof SyntaxError ? e.message : '알 수 없는 오류';
+      const msg = e instanceof SyntaxError ? e.message : t('unknownError', '알 수 없는 오류');
       setError(msg);
       setOutput('');
       setStats(null);
@@ -70,7 +76,7 @@ export default function JsonFormatterClient() {
         size: formatSize(new Blob([minified]).size),
       });
     } catch (e) {
-      const msg = e instanceof SyntaxError ? e.message : '알 수 없는 오류';
+      const msg = e instanceof SyntaxError ? e.message : t('unknownError', '알 수 없는 오류');
       setError(msg);
       setOutput('');
       setStats(null);
@@ -95,11 +101,11 @@ export default function JsonFormatterClient() {
     const sample = JSON.stringify({
       name: 'DevDogu',
       version: '1.0.0',
-      description: '개발자를 위한 온라인 도구 모음',
+      description: 'Developer tools collection',
       tools: [
-        { id: 1, name: 'JSON 포매터', active: true },
-        { id: 2, name: 'Base64 인코더', active: true },
-        { id: 3, name: '정규식 테스터', active: false },
+        { id: 1, name: 'JSON Formatter', active: true },
+        { id: 2, name: 'Base64 Encoder', active: true },
+        { id: 3, name: 'Regex Tester', active: false },
       ],
       config: { theme: 'dark', language: 'ko', nested: { deep: { value: 42 } } },
     });
@@ -111,20 +117,20 @@ export default function JsonFormatterClient() {
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-2">
         <button onClick={handleFormat} className="btn-primary">
-          포맷하기
+          {t('format', '포맷하기')}
         </button>
         <button onClick={handleMinify} className="btn-secondary">
-          압축하기
+          {t('minify', '압축하기')}
         </button>
         <button onClick={handleClear} className="btn-secondary">
-          초기화
+          {t('clear', '초기화')}
         </button>
         <button onClick={handleSample} className="btn-secondary text-[var(--color-text-secondary)]">
-          샘플 데이터
+          {t('sampleData', '샘플 데이터')}
         </button>
 
         <div className="ml-auto flex items-center gap-2 text-sm">
-          <span className="text-[var(--color-text-secondary)]">들여쓰기:</span>
+          <span className="text-[var(--color-text-secondary)]">{t('indent', '들여쓰기:')}</span>
           {([2, 4] as IndentSize[]).map((size) => (
             <button
               key={size}
@@ -135,7 +141,7 @@ export default function JsonFormatterClient() {
                   : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)]'
               }`}
             >
-              {size}칸
+              {size}{t('spaces', '칸')}
             </button>
           ))}
         </div>
@@ -146,7 +152,7 @@ export default function JsonFormatterClient() {
         {/* Input */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            입력
+            {t('input', '입력')}
           </label>
           <textarea
             value={input}
@@ -156,7 +162,7 @@ export default function JsonFormatterClient() {
                 handleFormat();
               }
             }}
-            placeholder='JSON 데이터를 붙여넣으세요... (Ctrl+Enter로 포맷)'
+            placeholder={t('inputPlaceholder', 'JSON 데이터를 붙여넣으세요... (Ctrl+Enter로 포맷)')}
             className="input-area min-h-[400px]"
             spellCheck={false}
           />
@@ -166,21 +172,21 @@ export default function JsonFormatterClient() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-              결과
+              {t('output', '결과')}
             </label>
             {output && (
               <button
                 onClick={handleCopy}
                 className="text-xs text-brand-500 hover:text-brand-400 transition-colors"
               >
-                {copied ? '✓ 복사됨' : '복사하기'}
+                {copied ? t('copied', '✓ 복사됨') : t('copy', '복사하기')}
               </button>
             )}
           </div>
           <textarea
             value={output}
             readOnly
-            placeholder="포맷된 결과가 여기에 표시됩니다."
+            placeholder={t('outputPlaceholder', '포맷된 결과가 여기에 표시됩니다.')}
             className="input-area min-h-[400px] bg-[var(--color-surface)]"
           />
         </div>
@@ -191,7 +197,7 @@ export default function JsonFormatterClient() {
         <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
           <span className="text-red-500 text-sm shrink-0">✕</span>
           <div>
-            <p className="text-sm font-medium text-red-500">유효하지 않은 JSON</p>
+            <p className="text-sm font-medium text-red-500">{t('invalidJson', '유효하지 않은 JSON')}</p>
             <p className="text-xs text-red-400/80 mt-1 font-mono">{error}</p>
           </div>
         </div>
@@ -200,9 +206,9 @@ export default function JsonFormatterClient() {
       {/* Stats */}
       {stats && (
         <div className="flex items-center gap-6 text-xs text-[var(--color-text-secondary)]">
-          <span>키 수: <strong className="text-[var(--color-text)]">{stats.keys}</strong></span>
-          <span>깊이: <strong className="text-[var(--color-text)]">{stats.depth}</strong></span>
-          <span>크기: <strong className="text-[var(--color-text)]">{stats.size}</strong></span>
+          <span>{t('keys', '키 수')}: <strong className="text-[var(--color-text)]">{stats.keys}</strong></span>
+          <span>{t('depth', '깊이')}: <strong className="text-[var(--color-text)]">{stats.depth}</strong></span>
+          <span>{t('size', '크기')}: <strong className="text-[var(--color-text)]">{stats.size}</strong></span>
         </div>
       )}
     </div>

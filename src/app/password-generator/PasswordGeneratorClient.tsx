@@ -70,7 +70,12 @@ const OPTION_LABELS: { key: keyof Omit<PasswordOptions, 'length'>; label: string
   { key: 'symbols', label: '특수문자', example: '!@#$%' },
 ];
 
-export default function PasswordGeneratorClient() {
+interface PasswordGeneratorClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function PasswordGeneratorClient({ dict }: PasswordGeneratorClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [options, setOptions] = useState<PasswordOptions>({
     length: 16,
     uppercase: true,
@@ -149,7 +154,7 @@ export default function PasswordGeneratorClient() {
       {/* Length slider */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium">비밀번호 길이</label>
+          <label className="text-sm font-medium">{t('passwordLength', '비밀번호 길이')}</label>
           <input
             type="number"
             value={options.length}
@@ -196,7 +201,7 @@ export default function PasswordGeneratorClient() {
       {/* Count + Generate */}
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <label className="text-sm text-[var(--color-text-secondary)]">개수</label>
+          <label className="text-sm text-[var(--color-text-secondary)]">{t('count', '개수')}</label>
           <input
             type="number"
             value={count}
@@ -208,14 +213,14 @@ export default function PasswordGeneratorClient() {
           <span className="text-xs text-[var(--color-text-secondary)]">1~50</span>
         </div>
         <button onClick={handleGenerate} className="btn-primary">
-          생성하기
+          {t('generate', '생성하기')}
         </button>
       </div>
 
       {/* Strength indicator */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-[var(--color-text-secondary)]">비밀번호 강도</span>
+          <span className="text-[var(--color-text-secondary)]">{t('passwordStrength', '비밀번호 강도')}</span>
           <span className="font-medium">{strength.label}</span>
         </div>
         <div className="h-2 bg-[var(--color-border)] rounded-full overflow-hidden">
@@ -227,17 +232,17 @@ export default function PasswordGeneratorClient() {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            생성 결과 ({passwords.length}개)
+            {t('generatedResult', '생성 결과')} ({passwords.length}{t('countUnit', '개')})
           </label>
           <button onClick={handleCopy} className="text-xs text-brand-500 hover:text-brand-400 transition-colors">
-            {copied ? '✓ 복사됨' : '전체 복사'}
+            {copied ? t('copied', '✓ 복사됨') : t('copyAll', '전체 복사')}
           </button>
         </div>
         {passwords.length === 1 ? (
           <div
             onClick={() => handleCopySingle(passwords[0])}
             className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg font-mono text-lg text-brand-500 cursor-pointer hover:bg-brand-500/5 transition-colors select-all text-center break-all"
-            title="클릭하여 복사"
+            title={t('clickToCopy', '클릭하여 복사')}
           >
             {passwords[0]}
           </div>
@@ -248,12 +253,12 @@ export default function PasswordGeneratorClient() {
                 key={i}
                 onClick={() => handleCopySingle(pw)}
                 className="flex items-center gap-3 px-4 py-2.5 hover:bg-brand-500/5 cursor-pointer transition-colors group"
-                title="클릭하여 복사"
+                title={t('clickToCopy', '클릭하여 복사')}
               >
                 <span className="text-xs text-[var(--color-text-secondary)] w-8 text-right shrink-0">{i + 1}</span>
                 <span className="font-mono text-sm select-all break-all">{pw}</span>
                 <span className="text-xs text-[var(--color-text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity ml-auto shrink-0">
-                  복사
+                  {t('copy', '복사')}
                 </span>
               </div>
             ))}

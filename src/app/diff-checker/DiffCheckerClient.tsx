@@ -55,7 +55,12 @@ const LINE_STYLES: Record<DiffLine['type'], string> = {
 
 const PREFIX: Record<DiffLine['type'], string> = { equal: ' ', add: '+', remove: '-' };
 
-export default function DiffCheckerClient() {
+interface DiffCheckerClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function DiffCheckerClient({ dict }: DiffCheckerClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [oldText, setOldText] = useState('');
   const [newText, setNewText] = useState('');
 
@@ -74,19 +79,19 @@ export default function DiffCheckerClient() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">원본 텍스트</label>
-          <textarea value={oldText} onChange={(e) => setOldText(e.target.value)} placeholder="원본 텍스트를 입력하세요..." className="input-area min-h-[200px]" spellCheck={false} />
+          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('originalText', '원본 텍스트')}</label>
+          <textarea value={oldText} onChange={(e) => setOldText(e.target.value)} placeholder={t('originalPlaceholder', '원본 텍스트를 입력하세요...')} className="input-area min-h-[200px]" spellCheck={false} />
         </div>
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">수정된 텍스트</label>
-          <textarea value={newText} onChange={(e) => setNewText(e.target.value)} placeholder="수정된 텍스트를 입력하세요..." className="input-area min-h-[200px]" spellCheck={false} />
+          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('modifiedText', '수정된 텍스트')}</label>
+          <textarea value={newText} onChange={(e) => setNewText(e.target.value)} placeholder={t('modifiedPlaceholder', '수정된 텍스트를 입력하세요...')} className="input-area min-h-[200px]" spellCheck={false} />
         </div>
       </div>
       {diff.length > 0 && (
         <div className="flex items-center gap-4 text-sm">
-          <span className="text-emerald-400">+{stats.added} 추가</span>
-          <span className="text-red-400">-{stats.removed} 삭제</span>
-          <span className="text-[var(--color-text-secondary)]">{stats.unchanged} 동일</span>
+          <span className="text-emerald-400">+{stats.added} {t('added', '추가')}</span>
+          <span className="text-red-400">-{stats.removed} {t('removed', '삭제')}</span>
+          <span className="text-[var(--color-text-secondary)]">{stats.unchanged} {t('unchanged', '동일')}</span>
         </div>
       )}
       {diff.length > 0 && (

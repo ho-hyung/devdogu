@@ -90,7 +90,12 @@ const PRESETS = [
 
 const ALL_SECTION_TITLES = ['기본 주기', '매일 실행', '요일 지정', '월/일 지정'];
 
-export default function CronCheatsheetClient() {
+interface CronCheatsheetClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function CronCheatsheetClient({ dict }: CronCheatsheetClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [copiedExpr, setCopiedExpr] = useState<string | null>(null);
@@ -148,7 +153,7 @@ export default function CronCheatsheetClient() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="검색... (예: 매일, 5분, 월요일, 자정, 범위, @daily)"
+          placeholder={t('searchPlaceholder', '검색... (예: 매일, 5분, 월요일, 자정, 범위, @daily)')}
           className="input-area px-4 py-3 w-full"
         />
         {search && (
@@ -171,7 +176,7 @@ export default function CronCheatsheetClient() {
               : 'bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] border border-[var(--color-border)]'
           }`}
         >
-          전체
+          {t('all', '전체')}
         </button>
         {ALL_SECTION_TITLES.map((name) => (
           <button
@@ -191,14 +196,14 @@ export default function CronCheatsheetClient() {
       {/* 결과 카운트 */}
       {isSearching && (
         <p className="text-xs text-[var(--color-text-secondary)]">
-          {totalCount}개 결과 (검색: &quot;{search}&quot;)
+          {totalCount}{t('resultCount', '개 결과')} ({t('search', '검색')}: &quot;{search}&quot;)
         </p>
       )}
 
       {/* Cron 형식 - 검색 중에는 숨김 */}
       {!isSearching && (
         <div>
-          <h2 className="text-lg font-semibold mb-3">Cron 표현식 형식</h2>
+          <h2 className="text-lg font-semibold mb-3">{t('cronFormat', 'Cron 표현식 형식')}</h2>
           <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4">
             <code className="font-mono text-sm text-brand-500">
               ┌───────────── 분 (0-59)<br />
@@ -215,14 +220,14 @@ export default function CronCheatsheetClient() {
       {/* 필드 설명 */}
       {(!isSearching || filteredFields.length > 0) && (
         <div>
-          <h2 className="text-lg font-semibold mb-3">필드별 범위</h2>
+          <h2 className="text-lg font-semibold mb-3">{t('fieldRange', '필드별 범위')}</h2>
           <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[var(--color-surface)]">
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">필드</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">범위</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">예시</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('field', '필드')}</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('range', '범위')}</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('example', '예시')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -242,14 +247,14 @@ export default function CronCheatsheetClient() {
       {/* 특수 문자 */}
       {(!isSearching || filteredChars.length > 0) && (
         <div>
-          <h2 className="text-lg font-semibold mb-3">특수 문자</h2>
+          <h2 className="text-lg font-semibold mb-3">{t('specialChars', '특수 문자')}</h2>
           <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[var(--color-surface)]">
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-20">문자</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-48">의미</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">예시</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-20">{t('character', '문자')}</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-48">{t('meaning', '의미')}</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('example', '예시')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -269,7 +274,7 @@ export default function CronCheatsheetClient() {
       {/* 예제 섹션들 */}
       {filteredSections.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold mb-4">자주 쓰는 예제</h2>
+          <h2 className="text-lg font-semibold mb-4">{t('commonExamples', '자주 쓰는 예제')}</h2>
           <div className="space-y-6">
             {filteredSections.map((section) => (
               <div key={section.title}>
@@ -278,8 +283,8 @@ export default function CronCheatsheetClient() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-[var(--color-surface)]">
-                        <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-56">표현식</th>
-                        <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">설명</th>
+                        <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-56">{t('expression', '표현식')}</th>
+                        <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('description', '설명')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -291,9 +296,9 @@ export default function CronCheatsheetClient() {
                               <button
                                 onClick={() => handleCopy(e.expression)}
                                 className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
-                                title="복사"
+                                title={t('copy', '복사')}
                               >
-                                {copiedExpr === e.expression ? '✓' : '복사'}
+                                {copiedExpr === e.expression ? '✓' : t('copy', '복사')}
                               </button>
                             </div>
                           </td>
@@ -312,14 +317,14 @@ export default function CronCheatsheetClient() {
       {/* 프리셋 */}
       {(!isSearching || filteredPresets.length > 0) && (
         <div>
-          <h2 className="text-lg font-semibold mb-3">프리셋 (축약형)</h2>
+          <h2 className="text-lg font-semibold mb-3">{t('presets', '프리셋 (축약형)')}</h2>
           <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[var(--color-surface)]">
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">프리셋</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">동일 표현식</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">설명</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('preset', '프리셋')}</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('equivalentExpression', '동일 표현식')}</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('description', '설명')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -331,9 +336,9 @@ export default function CronCheatsheetClient() {
                         <button
                           onClick={() => handleCopy(p.name.split(' / ')[0])}
                           className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
-                          title="복사"
+                          title={t('copy', '복사')}
                         >
-                          {copiedExpr === p.name.split(' / ')[0] ? '✓' : '복사'}
+                          {copiedExpr === p.name.split(' / ')[0] ? '✓' : t('copy', '복사')}
                         </button>
                       </div>
                     </td>
@@ -350,13 +355,13 @@ export default function CronCheatsheetClient() {
       {isSearching && totalCount === 0 && (
         <div className="text-center py-8">
           <p className="text-[var(--color-text-secondary)] mb-2">
-            &quot;{search}&quot;에 대한 검색 결과가 없습니다.
+            {t('noResultsFor', '"')}{search}{t('noResultsForSuffix', '"에 대한 검색 결과가 없습니다.')}
           </p>
           <button
             onClick={() => setSearch('')}
             className="text-brand-500 text-sm hover:underline"
           >
-            전체 보기
+            {t('viewAll', '전체 보기')}
           </button>
         </div>
       )}

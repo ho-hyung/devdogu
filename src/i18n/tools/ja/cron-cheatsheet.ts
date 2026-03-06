@@ -1,0 +1,31 @@
+export default {
+  metadata: {
+    title: 'Cron式ガイド',
+    description: 'Cron式の構文ガイド。例とよく使うパターン付き。',
+    keywords: ['Cron式', 'crontab', 'Cron構文', 'Cronの例', 'スケジュール'],
+  },
+  faq: [
+    { q: 'Cronとは？', a: 'Cronは、Unix系システムの時間ベースのジョブスケジューラーです。Cron式を使用してタスクの実行タイミングを定義します。' },
+  ],
+  ui: {
+    searchPlaceholder: '検索... (例: daily, 5min, monday, midnight, range, @daily)',
+    all: 'すべて',
+    resultCount: '{count}件の結果 (検索: "{query}")',
+    cronFormat: 'Cron式のフォーマット',
+    fieldRanges: 'フィールド範囲',
+    field: 'フィールド',
+    range: '範囲',
+    example: '例',
+    specialChars: '特殊文字',
+    character: '文字',
+    meaning: '意味',
+    commonExamples: 'よく使う例',
+    expression: '式',
+    description: '説明',
+    presets: 'プリセット（ショートカット）',
+    preset: 'プリセット',
+    equivalent: '同等の式',
+    noResults: '"{query}"の結果が見つかりません。',
+    viewAll: 'すべて表示',
+  },
+};

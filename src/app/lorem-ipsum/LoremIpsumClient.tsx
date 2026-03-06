@@ -112,7 +112,12 @@ function countWords(text: string): number {
   return text.trim().split(/\s+/).length;
 }
 
-export default function LoremIpsumClient() {
+interface LoremIpsumClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function LoremIpsumClient({ dict }: LoremIpsumClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [mode, setMode] = useState<Mode>('paragraphs');
   const [count, setCount] = useState(3);
   const [startWithClassic, setStartWithClassic] = useState(true);
@@ -176,13 +181,13 @@ export default function LoremIpsumClient() {
           ))}
         </div>
         <button onClick={handleGenerate} className="btn-primary">
-          생성하기
+          {t('generate', '생성하기')}
         </button>
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <label className="text-sm text-[var(--color-text-secondary)]">개수</label>
+          <label className="text-sm text-[var(--color-text-secondary)]">{t('count', '개수')}</label>
           <input
             type="number"
             value={count}
@@ -204,7 +209,7 @@ export default function LoremIpsumClient() {
             className="w-4 h-4 rounded border-[var(--color-border)] text-brand-500 focus:ring-brand-500/30"
           />
           <span className="text-sm text-[var(--color-text-secondary)]">
-            &quot;Lorem ipsum dolor sit amet...&quot;으로 시작
+            {t('startWithClassic', '"Lorem ipsum dolor sit amet..."으로 시작')}
           </span>
         </label>
       </div>
@@ -212,13 +217,13 @@ export default function LoremIpsumClient() {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            생성 결과
+            {t('generatedResult', '생성 결과')}
           </label>
           <button
             onClick={handleCopy}
             className="text-xs text-brand-500 hover:text-brand-400 transition-colors"
           >
-            {copied ? '복사됨' : '복사'}
+            {copied ? t('copied', '복사됨') : t('copy', '복사')}
           </button>
         </div>
         <textarea
@@ -231,11 +236,11 @@ export default function LoremIpsumClient() {
 
       <div className="flex items-center gap-4">
         <div className="px-3 py-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg">
-          <span className="text-xs text-[var(--color-text-secondary)]">단어 수 </span>
+          <span className="text-xs text-[var(--color-text-secondary)]">{t('wordCount', '단어 수')} </span>
           <span className="text-sm font-mono font-medium">{stats.words.toLocaleString()}</span>
         </div>
         <div className="px-3 py-2 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg">
-          <span className="text-xs text-[var(--color-text-secondary)]">글자 수 </span>
+          <span className="text-xs text-[var(--color-text-secondary)]">{t('charCount', '글자 수')} </span>
           <span className="text-sm font-mono font-medium">{stats.chars.toLocaleString()}</span>
         </div>
       </div>

@@ -4,7 +4,12 @@ import { useState } from 'react';
 
 type Mode = 'encode' | 'decode';
 
-export default function UrlEncoderClient() {
+interface UrlEncoderClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function UrlEncoderClient({ dict }: UrlEncoderClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [mode, setMode] = useState<Mode>('encode');
@@ -22,7 +27,7 @@ export default function UrlEncoderClient() {
       }
       setError('');
     } catch {
-      setError('유효하지 않은 입력입니다.');
+      setError(t('invalidInput', '유효하지 않은 입력입니다.'));
       setOutput('');
     }
   };
@@ -46,7 +51,7 @@ export default function UrlEncoderClient() {
                 mode === m ? 'bg-brand-500/10 text-brand-500' : 'text-[var(--color-text-secondary)]'
               }`}
             >
-              {m === 'encode' ? '인코딩' : '디코딩'}
+              {m === 'encode' ? t('encode', '인코딩') : t('decode', '디코딩')}
             </button>
           ))}
         </div>
@@ -68,31 +73,31 @@ export default function UrlEncoderClient() {
             Full URI
           </button>
         </div>
-        <button onClick={handleConvert} className="btn-primary">변환하기</button>
+        <button onClick={handleConvert} className="btn-primary">{t('convert', '변환하기')}</button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">입력</label>
+          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('input', '입력')}</label>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') handleConvert(); }}
-            placeholder={mode === 'encode' ? 'URL 인코딩할 문자열을 입력하세요...' : '디코딩할 URL 문자열을 입력하세요...'}
+            placeholder={mode === 'encode' ? t('encodePlaceholder', 'URL 인코딩할 문자열을 입력하세요...') : t('decodePlaceholder', '디코딩할 URL 문자열을 입력하세요...')}
             className="input-area min-h-[300px]"
             spellCheck={false}
           />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">결과</label>
+            <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('output', '결과')}</label>
             {output && (
               <button onClick={handleCopy} className="text-xs text-brand-500 hover:text-brand-400 transition-colors">
-                {copied ? '✓ 복사됨' : '복사하기'}
+                {copied ? t('copied', '✓ 복사됨') : t('copy', '복사하기')}
               </button>
             )}
           </div>
-          <textarea value={output} readOnly placeholder="결과가 여기에 표시됩니다." className="input-area min-h-[300px] bg-[var(--color-surface)]" />
+          <textarea value={output} readOnly placeholder={t('outputPlaceholder', '결과가 여기에 표시됩니다.')} className="input-area min-h-[300px] bg-[var(--color-surface)]" />
         </div>
       </div>
 

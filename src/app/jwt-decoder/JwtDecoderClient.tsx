@@ -14,14 +14,19 @@ function base64UrlDecode(str: string): string {
   );
 }
 
-export default function JwtDecoderClient() {
+interface JwtDecoderClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function JwtDecoderClient({ dict }: JwtDecoderClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [token, setToken] = useState('');
   const [copied, setCopied] = useState<string | null>(null);
 
   const decoded = useMemo(() => {
     if (!token.trim()) return null;
     const parts = token.trim().split('.');
-    if (parts.length !== 3) return { error: 'JWT는 점(.)으로 구분된 3개 부분이 필요합니다.' };
+    if (parts.length !== 3) return { error: t('jwtPartsError', 'JWT는 점(.)으로 구분된 3개 부분이 필요합니다.') };
 
     try {
       const header = JSON.parse(base64UrlDecode(parts[0]));
@@ -39,7 +44,7 @@ export default function JwtDecoderClient() {
 
       return { header, payload, signature: parts[2], timeFields, isExpired };
     } catch {
-      return { error: '유효하지 않은 JWT 형식입니다.' };
+      return { error: t('invalidJwt', '유효하지 않은 JWT 형식입니다.') };
     }
   }, [token]);
 
@@ -60,16 +65,16 @@ export default function JwtDecoderClient() {
     <div className="space-y-4">
       <div className="flex gap-2">
         <button onClick={handleSample} className="btn-secondary text-[var(--color-text-secondary)]">
-          샘플 토큰
+          {t('sampleToken', '샘플 토큰')}
         </button>
         <button onClick={() => { setToken(''); }} className="btn-secondary">
-          초기화
+          {t('clear', '초기화')}
         </button>
       </div>
 
       <div className="space-y-2">
         <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-          JWT 토큰
+          {t('jwtToken', 'JWT 토큰')}
         </label>
         <textarea
           value={token}
@@ -96,7 +101,7 @@ export default function JwtDecoderClient() {
                 onClick={() => handleCopy(JSON.stringify(decoded.header, null, 2), 'header')}
                 className="text-xs text-brand-500 hover:text-brand-400"
               >
-                {copied === 'header' ? '✓ 복사됨' : '복사'}
+                {copied === 'header' ? t('copied', '✓ 복사됨') : t('copy', '복사')}
               </button>
             </div>
             <pre className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg font-mono text-sm overflow-auto custom-scrollbar">
@@ -111,7 +116,7 @@ export default function JwtDecoderClient() {
                 <label className="text-xs font-medium text-violet-400 uppercase tracking-wider">Payload</label>
                 {decoded.isExpired !== null && (
                   <span className={`text-xs px-2 py-0.5 rounded-full ${decoded.isExpired ? 'bg-red-500/10 text-red-400' : 'bg-green-500/10 text-green-400'}`}>
-                    {decoded.isExpired ? '만료됨' : '유효'}
+                    {decoded.isExpired ? t('expired', '만료됨') : t('valid', '유효')}
                   </span>
                 )}
               </div>
@@ -119,7 +124,7 @@ export default function JwtDecoderClient() {
                 onClick={() => handleCopy(JSON.stringify(decoded.payload, null, 2), 'payload')}
                 className="text-xs text-brand-500 hover:text-brand-400"
               >
-                {copied === 'payload' ? '✓ 복사됨' : '복사'}
+                {copied === 'payload' ? t('copied', '✓ 복사됨') : t('copy', '복사')}
               </button>
             </div>
             <pre className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg font-mono text-sm overflow-auto custom-scrollbar">
@@ -131,7 +136,7 @@ export default function JwtDecoderClient() {
           {decoded.timeFields && Object.keys(decoded.timeFields).length > 0 && (
             <div className="lg:col-span-2 space-y-2">
               <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-                시간 정보
+                {t('timeInfo', '시간 정보')}
               </label>
               <div className="flex flex-wrap gap-4 text-xs">
                 {Object.entries(decoded.timeFields).map(([key, val]) => (

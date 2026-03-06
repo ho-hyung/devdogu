@@ -55,7 +55,12 @@ function formatSQL(sql: string): string {
 
 const SAMPLE = `select u.id, u.name, u.email, o.total from users u left join orders o on u.id = o.user_id where u.active = 1 and o.total > 100 order by o.total desc limit 10`;
 
-export default function SqlFormatterClient() {
+interface SqlFormatterClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function SqlFormatterClient({ dict }: SqlFormatterClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [copied, setCopied] = useState(false);
@@ -80,20 +85,20 @@ export default function SqlFormatterClient() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <button onClick={handleFormat} className="btn-primary">포맷팅</button>
-        <button onClick={handleSample} className="btn-secondary">예시 SQL</button>
+        <button onClick={handleFormat} className="btn-primary">{t('format', '포맷팅')}</button>
+        <button onClick={handleSample} className="btn-secondary">{t('sampleSql', '예시 SQL')}</button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">SQL 입력</label>
-          <textarea value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') handleFormat(); }} placeholder="SQL 쿼리를 입력하세요..." className="input-area min-h-[300px]" spellCheck={false} />
+          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('sqlInput', 'SQL 입력')}</label>
+          <textarea value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') handleFormat(); }} placeholder={t('sqlPlaceholder', 'SQL 쿼리를 입력하세요...')} className="input-area min-h-[300px]" spellCheck={false} />
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">포맷팅 결과</label>
-            {output && (<button onClick={handleCopy} className="text-xs text-brand-500 hover:text-brand-400 transition-colors">{copied ? '✓ 복사됨' : '복사하기'}</button>)}
+            <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('formatResult', '포맷팅 결과')}</label>
+            {output && (<button onClick={handleCopy} className="text-xs text-brand-500 hover:text-brand-400 transition-colors">{copied ? t('copied', '✓ 복사됨') : t('copy', '복사하기')}</button>)}
           </div>
-          <textarea value={output} readOnly placeholder="포맷팅 결과가 여기에 표시됩니다." className="input-area min-h-[300px] bg-[var(--color-surface)]" />
+          <textarea value={output} readOnly placeholder={t('outputPlaceholder', '포맷팅 결과가 여기에 표시됩니다.')} className="input-area min-h-[300px] bg-[var(--color-surface)]" />
         </div>
       </div>
     </div>

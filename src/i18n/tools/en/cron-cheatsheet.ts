@@ -1,0 +1,31 @@
+export default {
+  metadata: {
+    title: 'Cron Expression Guide',
+    description: 'Cron expression syntax guide with examples and common patterns.',
+    keywords: ['cron expression', 'crontab', 'cron syntax', 'cron examples', 'schedule'],
+  },
+  faq: [
+    { q: 'What is cron?', a: 'Cron is a time-based job scheduler in Unix-like systems. It uses cron expressions to define when tasks should run.' },
+  ],
+  ui: {
+    searchPlaceholder: 'Search... (e.g. daily, 5min, monday, midnight, range, @daily)',
+    all: 'All',
+    resultCount: '{count} results (Search: "{query}")',
+    cronFormat: 'Cron Expression Format',
+    fieldRanges: 'Field Ranges',
+    field: 'Field',
+    range: 'Range',
+    example: 'Example',
+    specialChars: 'Special Characters',
+    character: 'Character',
+    meaning: 'Meaning',
+    commonExamples: 'Common Examples',
+    expression: 'Expression',
+    description: 'Description',
+    presets: 'Presets (Shortcuts)',
+    preset: 'Preset',
+    equivalent: 'Equivalent',
+    noResults: 'No results for "{query}".',
+    viewAll: 'View all',
+  },
+};

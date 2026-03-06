@@ -1,8 +1,9 @@
+import type { Locale } from '@/i18n/config';
+
 export interface Tool {
   id: string;
-  name: string;
-  nameEn: string;
-  description: string;
+  name: Record<Locale, string>;
+  description: Record<Locale, string>;
   href: string;
   icon: string;
   category: 'formatter' | 'encoder' | 'generator' | 'converter' | 'cheatsheet';
@@ -12,9 +13,13 @@ export interface Tool {
 export const tools: Tool[] = [
   {
     id: 'json-formatter',
-    name: 'JSON 포매터',
-    nameEn: 'JSON Formatter',
-    description: 'JSON 데이터를 보기 좋게 정리하고 유효성을 검증합니다.',
+    name: { ko: 'JSON 포매터', en: 'JSON Formatter', ja: 'JSONフォーマッター', zh: 'JSON格式化' },
+    description: {
+      ko: 'JSON 데이터를 보기 좋게 정리하고 유효성을 검증합니다.',
+      en: 'Format and validate JSON data for easy reading.',
+      ja: 'JSONデータを整形し、有効性を検証します。',
+      zh: '格式化JSON数据并验证其有效性。',
+    },
     href: '/json-formatter',
     icon: '{ }',
     category: 'formatter',
@@ -22,9 +27,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'base64',
-    name: 'Base64 인코더/디코더',
-    nameEn: 'Base64 Encoder/Decoder',
-    description: 'Base64 문자열을 인코딩하거나 디코딩합니다.',
+    name: { ko: 'Base64 인코더/디코더', en: 'Base64 Encoder/Decoder', ja: 'Base64エンコーダー/デコーダー', zh: 'Base64编码/解码' },
+    description: {
+      ko: 'Base64 문자열을 인코딩하거나 디코딩합니다.',
+      en: 'Encode or decode Base64 strings.',
+      ja: 'Base64文字列をエンコード・デコードします。',
+      zh: '编码或解码Base64字符串。',
+    },
     href: '/base64',
     icon: 'B64',
     category: 'encoder',
@@ -32,9 +41,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'url-encoder',
-    name: 'URL 인코더/디코더',
-    nameEn: 'URL Encoder/Decoder',
-    description: 'URL 문자열을 인코딩하거나 디코딩합니다.',
+    name: { ko: 'URL 인코더/디코더', en: 'URL Encoder/Decoder', ja: 'URLエンコーダー/デコーダー', zh: 'URL编码/解码' },
+    description: {
+      ko: 'URL 문자열을 인코딩하거나 디코딩합니다.',
+      en: 'Encode or decode URL strings.',
+      ja: 'URL文字列をエンコード・デコードします。',
+      zh: '编码或解码URL字符串。',
+    },
     href: '/url-encoder',
     icon: '%20',
     category: 'encoder',
@@ -42,9 +55,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'regex-tester',
-    name: '정규식 테스터',
-    nameEn: 'Regex Tester',
-    description: '정규표현식을 실시간으로 테스트하고 매칭 결과를 확인합니다.',
+    name: { ko: '정규식 테스터', en: 'Regex Tester', ja: '正規表現テスター', zh: '正则表达式测试' },
+    description: {
+      ko: '정규표현식을 실시간으로 테스트하고 매칭 결과를 확인합니다.',
+      en: 'Test regular expressions in real-time and view matches.',
+      ja: '正規表現をリアルタイムでテストし、マッチング結果を確認します。',
+      zh: '实时测试正则表达式并查看匹配结果。',
+    },
     href: '/regex-tester',
     icon: '.*',
     category: 'formatter',
@@ -52,9 +69,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'jwt-decoder',
-    name: 'JWT 디코더',
-    nameEn: 'JWT Decoder',
-    description: 'JWT 토큰의 Header, Payload를 디코딩하여 확인합니다.',
+    name: { ko: 'JWT 디코더', en: 'JWT Decoder', ja: 'JWTデコーダー', zh: 'JWT解码' },
+    description: {
+      ko: 'JWT 토큰의 Header, Payload를 디코딩하여 확인합니다.',
+      en: 'Decode JWT token header and payload.',
+      ja: 'JWTトークンのHeader、Payloadをデコードして確認します。',
+      zh: '解码JWT令牌的Header和Payload。',
+    },
     href: '/jwt-decoder',
     icon: 'JWT',
     category: 'encoder',
@@ -62,9 +83,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'timestamp',
-    name: 'Unix 타임스탬프 변환기',
-    nameEn: 'Unix Timestamp Converter',
-    description: 'Unix 타임스탬프와 사람이 읽을 수 있는 날짜를 상호 변환합니다.',
+    name: { ko: 'Unix 타임스탬프 변환기', en: 'Unix Timestamp Converter', ja: 'Unixタイムスタンプ変換', zh: 'Unix时间戳转换' },
+    description: {
+      ko: 'Unix 타임스탬프와 사람이 읽을 수 있는 날짜를 상호 변환합니다.',
+      en: 'Convert between Unix timestamps and human-readable dates.',
+      ja: 'Unixタイムスタンプと人間が読める日付を相互変換します。',
+      zh: '在Unix时间戳和可读日期之间互相转换。',
+    },
     href: '/timestamp',
     icon: '⏱',
     category: 'converter',
@@ -72,9 +97,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'id-generator',
-    name: 'UUID/ULID 생성기',
-    nameEn: 'UUID/ULID Generator',
-    description: 'UUID v4, ULID, NanoID를 생성합니다. 벌크 생성도 지원합니다.',
+    name: { ko: 'UUID/ULID 생성기', en: 'UUID/ULID Generator', ja: 'UUID/ULIDジェネレーター', zh: 'UUID/ULID生成器' },
+    description: {
+      ko: 'UUID v4, ULID, NanoID를 생성합니다. 벌크 생성도 지원합니다.',
+      en: 'Generate UUID v4, ULID, and NanoID. Supports bulk generation.',
+      ja: 'UUID v4、ULID、NanoIDを生成します。一括生成にも対応。',
+      zh: '生成UUID v4、ULID、NanoID，支持批量生成。',
+    },
     href: '/id-generator',
     icon: '#id',
     category: 'generator',
@@ -82,9 +111,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'hash-generator',
-    name: '해시 생성기',
-    nameEn: 'Hash Generator',
-    description: 'MD5, SHA-1, SHA-256 등 다양한 해시를 생성합니다.',
+    name: { ko: '해시 생성기', en: 'Hash Generator', ja: 'ハッシュジェネレーター', zh: '哈希生成器' },
+    description: {
+      ko: 'MD5, SHA-1, SHA-256 등 다양한 해시를 생성합니다.',
+      en: 'Generate MD5, SHA-1, SHA-256 and other hashes.',
+      ja: 'MD5、SHA-1、SHA-256などのハッシュを生成します。',
+      zh: '生成MD5、SHA-1、SHA-256等多种哈希。',
+    },
     href: '/hash-generator',
     icon: '#!',
     category: 'generator',
@@ -92,9 +125,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'diff-checker',
-    name: 'Diff 비교기',
-    nameEn: 'Diff Checker',
-    description: '두 텍스트의 차이점을 비교하여 시각적으로 보여줍니다.',
+    name: { ko: 'Diff 비교기', en: 'Diff Checker', ja: 'Diff比較', zh: 'Diff比较' },
+    description: {
+      ko: '두 텍스트의 차이점을 비교하여 시각적으로 보여줍니다.',
+      en: 'Compare two texts and visually highlight differences.',
+      ja: '2つのテキストの差分を比較して視覚的に表示します。',
+      zh: '比较两段文本的差异并可视化显示。',
+    },
     href: '/diff-checker',
     icon: '±',
     category: 'formatter',
@@ -102,9 +139,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'color-converter',
-    name: 'Color 변환기',
-    nameEn: 'Color Converter',
-    description: 'HEX, RGB, HSL 색상 값을 상호 변환합니다.',
+    name: { ko: 'Color 변환기', en: 'Color Converter', ja: 'カラーコンバーター', zh: '颜色转换' },
+    description: {
+      ko: 'HEX, RGB, HSL 색상 값을 상호 변환합니다.',
+      en: 'Convert between HEX, RGB, and HSL color values.',
+      ja: 'HEX、RGB、HSLカラー値を相互変換します。',
+      zh: '在HEX、RGB、HSL颜色值之间互相转换。',
+    },
     href: '/color-converter',
     icon: '🎨',
     category: 'converter',
@@ -112,9 +153,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'markdown-preview',
-    name: 'Markdown 미리보기',
-    nameEn: 'Markdown Preview',
-    description: 'Markdown 문법을 실시간으로 미리보기합니다.',
+    name: { ko: 'Markdown 미리보기', en: 'Markdown Preview', ja: 'Markdownプレビュー', zh: 'Markdown预览' },
+    description: {
+      ko: 'Markdown 문법을 실시간으로 미리보기합니다.',
+      en: 'Preview Markdown syntax in real-time.',
+      ja: 'Markdown構文をリアルタイムでプレビューします。',
+      zh: '实时预览Markdown语法。',
+    },
     href: '/markdown-preview',
     icon: 'M↓',
     category: 'formatter',
@@ -122,9 +167,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'qr-generator',
-    name: 'QR코드 생성기',
-    nameEn: 'QR Code Generator',
-    description: '텍스트나 URL로 QR코드를 즉시 생성합니다.',
+    name: { ko: 'QR코드 생성기', en: 'QR Code Generator', ja: 'QRコードジェネレーター', zh: 'QR码生成器' },
+    description: {
+      ko: '텍스트나 URL로 QR코드를 즉시 생성합니다.',
+      en: 'Instantly generate QR codes from text or URLs.',
+      ja: 'テキストやURLからQRコードを即座に生成します。',
+      zh: '从文本或URL即时生成QR码。',
+    },
     href: '/qr-generator',
     icon: 'QR',
     category: 'generator',
@@ -132,9 +181,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'sql-formatter',
-    name: 'SQL 포매터',
-    nameEn: 'SQL Formatter',
-    description: 'SQL 쿼리를 보기 좋게 정리합니다.',
+    name: { ko: 'SQL 포매터', en: 'SQL Formatter', ja: 'SQLフォーマッター', zh: 'SQL格式化' },
+    description: {
+      ko: 'SQL 쿼리를 보기 좋게 정리합니다.',
+      en: 'Format SQL queries for easy reading.',
+      ja: 'SQLクエリを見やすく整形します。',
+      zh: '格式化SQL查询使其更易阅读。',
+    },
     href: '/sql-formatter',
     icon: 'SQL',
     category: 'formatter',
@@ -142,9 +195,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'git-cheatsheet',
-    name: 'Git 명령어 모음',
-    nameEn: 'Git Cheatsheet',
-    description: 'Git 명령어를 카테고리별로 정리한 치트시트입니다.',
+    name: { ko: 'Git 명령어 모음', en: 'Git Cheatsheet', ja: 'Gitチートシート', zh: 'Git命令速查' },
+    description: {
+      ko: 'Git 명령어를 카테고리별로 정리한 치트시트입니다.',
+      en: 'Git commands organized by category.',
+      ja: 'Gitコマンドをカテゴリ別に整理したチートシートです。',
+      zh: '按类别整理的Git命令速查表。',
+    },
     href: '/git-cheatsheet',
     icon: 'Git',
     category: 'cheatsheet',
@@ -152,9 +209,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'docker-cheatsheet',
-    name: 'Docker 명령어 모음',
-    nameEn: 'Docker Cheatsheet',
-    description: 'Docker 및 Docker Compose 명령어를 정리한 치트시트입니다.',
+    name: { ko: 'Docker 명령어 모음', en: 'Docker Cheatsheet', ja: 'Dockerチートシート', zh: 'Docker命令速查' },
+    description: {
+      ko: 'Docker 및 Docker Compose 명령어를 정리한 치트시트입니다.',
+      en: 'Docker and Docker Compose commands reference.',
+      ja: 'DockerおよびDocker Composeコマンドのチートシートです。',
+      zh: 'Docker和Docker Compose命令参考。',
+    },
     href: '/docker-cheatsheet',
     icon: '🐳',
     category: 'cheatsheet',
@@ -162,9 +223,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'http-status',
-    name: 'HTTP 상태코드 정리',
-    nameEn: 'HTTP Status Codes',
-    description: 'HTTP 상태코드를 카테고리별로 정리하고 설명합니다.',
+    name: { ko: 'HTTP 상태코드 정리', en: 'HTTP Status Codes', ja: 'HTTPステータスコード', zh: 'HTTP状态码' },
+    description: {
+      ko: 'HTTP 상태코드를 카테고리별로 정리하고 설명합니다.',
+      en: 'HTTP status codes organized by category with descriptions.',
+      ja: 'HTTPステータスコードをカテゴリ別に整理・説明します。',
+      zh: '按类别整理HTTP状态码并附说明。',
+    },
     href: '/http-status',
     icon: '200',
     category: 'cheatsheet',
@@ -172,9 +237,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'cron-cheatsheet',
-    name: 'Cron 표현식 가이드',
-    nameEn: 'Cron Expression Guide',
-    description: 'Cron 표현식 문법과 주요 예제를 정리한 가이드입니다.',
+    name: { ko: 'Cron 표현식 가이드', en: 'Cron Expression Guide', ja: 'Cron式ガイド', zh: 'Cron表达式指南' },
+    description: {
+      ko: 'Cron 표현식 문법과 주요 예제를 정리한 가이드입니다.',
+      en: 'Guide to cron expression syntax with examples.',
+      ja: 'Cron式の文法と主要な例を整理したガイドです。',
+      zh: 'Cron表达式语法和常用示例指南。',
+    },
     href: '/cron-cheatsheet',
     icon: '⏰',
     category: 'cheatsheet',
@@ -182,9 +251,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'linux-cheatsheet',
-    name: 'Linux 명령어 모음',
-    nameEn: 'Linux Cheatsheet',
-    description: 'Linux 필수 명령어를 카테고리별로 정리한 치트시트입니다.',
+    name: { ko: 'Linux 명령어 모음', en: 'Linux Cheatsheet', ja: 'Linuxチートシート', zh: 'Linux命令速查' },
+    description: {
+      ko: 'Linux 필수 명령어를 카테고리별로 정리한 치트시트입니다.',
+      en: 'Essential Linux commands organized by category.',
+      ja: 'Linux必須コマンドをカテゴリ別に整理したチートシートです。',
+      zh: '按类别整理的Linux必备命令速查表。',
+    },
     href: '/linux-cheatsheet',
     icon: '🐧',
     category: 'cheatsheet',
@@ -192,9 +265,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'regex-cheatsheet',
-    name: '정규식 문법 정리',
-    nameEn: 'Regex Cheatsheet',
-    description: '정규표현식 문법과 주요 패턴을 정리한 치트시트입니다.',
+    name: { ko: '정규식 문법 정리', en: 'Regex Cheatsheet', ja: '正規表現チートシート', zh: '正则表达式速查' },
+    description: {
+      ko: '정규표현식 문법과 주요 패턴을 정리한 치트시트입니다.',
+      en: 'Regex syntax and common patterns reference.',
+      ja: '正規表現の文法と主要パターンを整理したチートシートです。',
+      zh: '正则表达式语法和常用模式参考。',
+    },
     href: '/regex-cheatsheet',
     icon: '/.*/',
     category: 'cheatsheet',
@@ -202,9 +279,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'json-yaml',
-    name: 'JSON ↔ YAML 변환기',
-    nameEn: 'JSON YAML Converter',
-    description: 'JSON과 YAML 형식을 양방향으로 변환합니다.',
+    name: { ko: 'JSON ↔ YAML 변환기', en: 'JSON YAML Converter', ja: 'JSON ↔ YAML変換', zh: 'JSON ↔ YAML转换' },
+    description: {
+      ko: 'JSON과 YAML 형식을 양방향으로 변환합니다.',
+      en: 'Convert between JSON and YAML formats.',
+      ja: 'JSONとYAML形式を双方向に変換します。',
+      zh: '在JSON和YAML格式之间双向转换。',
+    },
     href: '/json-yaml',
     icon: 'Y{}',
     category: 'converter',
@@ -212,9 +293,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'text-case',
-    name: 'Text Case 변환기',
-    nameEn: 'Text Case Converter',
-    description: '텍스트를 camelCase, snake_case, kebab-case 등 다양한 케이스로 변환합니다.',
+    name: { ko: 'Text Case 변환기', en: 'Text Case Converter', ja: 'テキストケース変換', zh: '文本大小写转换' },
+    description: {
+      ko: '텍스트를 camelCase, snake_case, kebab-case 등 다양한 케이스로 변환합니다.',
+      en: 'Convert text between camelCase, snake_case, kebab-case and more.',
+      ja: 'テキストをcamelCase、snake_case、kebab-caseなど様々なケースに変換します。',
+      zh: '将文本转换为camelCase、snake_case、kebab-case等多种格式。',
+    },
     href: '/text-case',
     icon: 'Aa',
     category: 'converter',
@@ -222,9 +307,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'lorem-ipsum',
-    name: 'Lorem Ipsum 생성기',
-    nameEn: 'Lorem Ipsum Generator',
-    description: '더미 텍스트(Lorem Ipsum)를 문단, 문장, 단어 단위로 생성합니다.',
+    name: { ko: 'Lorem Ipsum 생성기', en: 'Lorem Ipsum Generator', ja: 'Lorem Ipsumジェネレーター', zh: 'Lorem Ipsum生成器' },
+    description: {
+      ko: '더미 텍스트(Lorem Ipsum)를 문단, 문장, 단어 단위로 생성합니다.',
+      en: 'Generate placeholder text by paragraphs, sentences, or words.',
+      ja: 'ダミーテキスト(Lorem Ipsum)を段落・文・単語単位で生成します。',
+      zh: '按段落、句子或单词生成Lorem Ipsum占位文本。',
+    },
     href: '/lorem-ipsum',
     icon: 'Li',
     category: 'generator',
@@ -232,9 +321,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'password-generator',
-    name: '비밀번호 생성기',
-    nameEn: 'Password Generator',
-    description: '안전한 랜덤 비밀번호를 즉시 생성합니다. 길이, 문자 종류 조절, 강도 표시.',
+    name: { ko: '비밀번호 생성기', en: 'Password Generator', ja: 'パスワードジェネレーター', zh: '密码生成器' },
+    description: {
+      ko: '안전한 랜덤 비밀번호를 즉시 생성합니다. 길이, 문자 종류 조절, 강도 표시.',
+      en: 'Generate secure random passwords with custom length and character options.',
+      ja: '安全なランダムパスワードを即座に生成します。長さ・文字種類の調整・強度表示。',
+      zh: '即时生成安全随机密码，可调整长度和字符类型。',
+    },
     href: '/password-generator',
     icon: '🔐',
     category: 'generator',
@@ -242,9 +335,13 @@ export const tools: Tool[] = [
   },
   {
     id: 'cron-builder',
-    name: 'Cron 표현식 빌더',
-    nameEn: 'Cron Expression Builder',
-    description: 'GUI로 Cron 표현식을 생성하고 다음 실행 시간을 확인합니다.',
+    name: { ko: 'Cron 표현식 빌더', en: 'Cron Expression Builder', ja: 'Cron式ビルダー', zh: 'Cron表达式构建器' },
+    description: {
+      ko: 'GUI로 Cron 표현식을 생성하고 다음 실행 시간을 확인합니다.',
+      en: 'Build cron expressions with GUI and preview next run times.',
+      ja: 'GUIでCron式を作成し、次の実行時間を確認します。',
+      zh: '通过GUI构建Cron表达式并查看下次执行时间。',
+    },
     href: '/cron-builder',
     icon: '⏲',
     category: 'generator',
@@ -259,3 +356,11 @@ export const categories = {
   converter: { name: '변환기', color: 'amber' },
   cheatsheet: { name: '치트시트', color: 'rose' },
 };
+
+export function getToolName(tool: Tool, locale: Locale): string {
+  return tool.name[locale];
+}
+
+export function getToolDescription(tool: Tool, locale: Locale): string {
+  return tool.description[locale];
+}

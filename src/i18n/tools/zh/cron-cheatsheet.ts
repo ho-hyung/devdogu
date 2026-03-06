@@ -1,0 +1,31 @@
+export default {
+  metadata: {
+    title: 'Cron表达式指南',
+    description: 'Cron表达式语法指南，附示例和常用模式。',
+    keywords: ['Cron表达式', 'crontab', 'Cron语法', 'Cron示例', '定时调度'],
+  },
+  faq: [
+    { q: '什么是Cron？', a: 'Cron是类Unix系统中基于时间的任务调度器。使用Cron表达式定义任务的执行时间。' },
+  ],
+  ui: {
+    searchPlaceholder: '搜索... (例如: daily, 5min, monday, midnight, range, @daily)',
+    all: '全部',
+    resultCount: '{count}个结果 (搜索: "{query}")',
+    cronFormat: 'Cron表达式格式',
+    fieldRanges: '字段范围',
+    field: '字段',
+    range: '范围',
+    example: '示例',
+    specialChars: '特殊字符',
+    character: '字符',
+    meaning: '含义',
+    commonExamples: '常用示例',
+    expression: '表达式',
+    description: '说明',
+    presets: '预设（快捷方式）',
+    preset: '预设',
+    equivalent: '等效表达式',
+    noResults: '未找到"{query}"的结果。',
+    viewAll: '查看全部',
+  },
+};

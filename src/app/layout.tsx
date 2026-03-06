@@ -35,6 +35,15 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ko_KR',
   },
+  alternates: {
+    languages: {
+      ko: 'https://devdogu.vercel.app',
+      en: 'https://devdogu.vercel.app/en',
+      ja: 'https://devdogu.vercel.app/ja',
+      zh: 'https://devdogu.vercel.app/zh',
+      'x-default': 'https://devdogu.vercel.app',
+    },
+  },
 };
 
 export default function RootLayout({

@@ -51,7 +51,12 @@ function hslToRgb(h: number, s: number, l: number): RGB {
 
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, Math.round(v)));
 
-export default function ColorConverterClient() {
+interface ColorConverterClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function ColorConverterClient({ dict }: ColorConverterClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [hex, setHex] = useState('#338dff');
   const [r, setR] = useState(51); const [g, setG] = useState(141); const [b, setB] = useState(255);
   const [h, setH] = useState(217); const [s, setS] = useState(100); const [l, setL] = useState(60);
@@ -97,21 +102,21 @@ export default function ColorConverterClient() {
         <div className="w-24 h-24 rounded-xl border border-[var(--color-border)] shrink-0" style={{ backgroundColor: hex }} />
         <div className="space-y-2">
           <input type="color" value={hex} onChange={(e) => updateFromHex(e.target.value)} className="w-12 h-10 rounded cursor-pointer border border-[var(--color-border)]" />
-          <p className="text-xs text-[var(--color-text-secondary)]">컬러 피커</p>
+          <p className="text-xs text-[var(--color-text-secondary)]">{t('colorPicker', '컬러 피커')}</p>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">HEX</span>
-            <button onClick={() => handleCopy(hex, 'hex')} className="text-xs text-brand-500 hover:text-brand-400">{copied === 'hex' ? '✓ 복사됨' : '복사'}</button>
+            <button onClick={() => handleCopy(hex, 'hex')} className="text-xs text-brand-500 hover:text-brand-400">{copied === 'hex' ? t('copied', '✓ 복사됨') : t('copy', '복사')}</button>
           </div>
           <input type="text" value={hex} onChange={(e) => updateFromHex(e.target.value)} className="w-full px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30" />
         </div>
         <div className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">RGB</span>
-            <button onClick={() => handleCopy(cssRgb, 'rgb')} className="text-xs text-brand-500 hover:text-brand-400">{copied === 'rgb' ? '✓ 복사됨' : '복사'}</button>
+            <button onClick={() => handleCopy(cssRgb, 'rgb')} className="text-xs text-brand-500 hover:text-brand-400">{copied === 'rgb' ? t('copied', '✓ 복사됨') : t('copy', '복사')}</button>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[
@@ -129,7 +134,7 @@ export default function ColorConverterClient() {
         <div className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">HSL</span>
-            <button onClick={() => handleCopy(cssHsl, 'hsl')} className="text-xs text-brand-500 hover:text-brand-400">{copied === 'hsl' ? '✓ 복사됨' : '복사'}</button>
+            <button onClick={() => handleCopy(cssHsl, 'hsl')} className="text-xs text-brand-500 hover:text-brand-400">{copied === 'hsl' ? t('copied', '✓ 복사됨') : t('copy', '복사')}</button>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[
@@ -146,11 +151,11 @@ export default function ColorConverterClient() {
         </div>
       </div>
       <div className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg space-y-2">
-        <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">CSS 코드</span>
+        <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">{t('cssCode', 'CSS 코드')}</span>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 font-mono text-sm">
           {[{ label: 'HEX', value: hex }, { label: 'RGB', value: cssRgb }, { label: 'HSL', value: cssHsl }].map((item) => (
-            <button key={item.label} onClick={() => handleCopy(item.value, `css-${item.label}`)} className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg hover:border-brand-500/50 transition-colors text-left" title="클릭하여 복사">
-              {copied === `css-${item.label}` ? '✓ 복사됨' : item.value}
+            <button key={item.label} onClick={() => handleCopy(item.value, `css-${item.label}`)} className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg hover:border-brand-500/50 transition-colors text-left" title={t('clickToCopy', '클릭하여 복사')}>
+              {copied === `css-${item.label}` ? t('copied', '✓ 복사됨') : item.value}
             </button>
           ))}
         </div>

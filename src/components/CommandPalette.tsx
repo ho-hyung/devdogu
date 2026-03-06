@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { tools } from '@/lib/tools';
+import { getLocaleFromPathname, defaultLocale } from '@/i18n/config';
+import { getDictionarySync } from '@/i18n/get-dictionary';
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -11,17 +13,21 @@ export default function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const dict = getDictionarySync(locale);
 
   const filtered = useMemo(() => {
     if (!query) return tools;
     const q = query.toLowerCase();
     return tools.filter(
       (t) =>
-        t.name.toLowerCase().includes(q) ||
-        t.nameEn.toLowerCase().includes(q) ||
+        t.name.ko.toLowerCase().includes(q) ||
+        t.name.en.toLowerCase().includes(q) ||
+        t.name[locale].toLowerCase().includes(q) ||
         t.keywords.some((kw) => kw.toLowerCase().includes(q))
     );
-  }, [query]);
+  }, [query, locale]);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -32,9 +38,10 @@ export default function CommandPalette() {
   const navigate = useCallback(
     (href: string) => {
       close();
-      router.push(href);
+      const localizedHref = locale === defaultLocale ? href : `/${locale}${href}`;
+      router.push(localizedHref);
     },
-    [close, router]
+    [close, router, locale]
   );
 
   useEffect(() => {
@@ -99,7 +106,7 @@ export default function CommandPalette() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="도구 검색..."
+            placeholder={dict.commandPalette.searchPlaceholder}
             className="flex-1 py-3 bg-transparent text-sm focus:outline-none placeholder:text-[var(--color-text-secondary)]"
           />
           <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-mono text-[var(--color-text-secondary)] bg-[var(--color-surface)] border border-[var(--color-border)] rounded">
@@ -122,24 +129,24 @@ export default function CommandPalette() {
                 <span className="font-mono text-xs w-10 text-center shrink-0 opacity-60">
                   {tool.icon}
                 </span>
-                <span className="font-medium">{tool.name}</span>
+                <span className="font-medium">{tool.name[locale]}</span>
                 <span className="text-xs text-[var(--color-text-secondary)] ml-auto">
-                  {tool.nameEn}
+                  {tool.name.en}
                 </span>
               </button>
             ))
           ) : (
             <div className="px-4 py-8 text-center text-sm text-[var(--color-text-secondary)]">
-              검색 결과가 없습니다.
+              {dict.commandPalette.noResults}
             </div>
           )}
         </div>
 
         {/* Footer */}
         <div className="flex items-center gap-4 px-4 py-2 border-t border-[var(--color-border)] text-[10px] text-[var(--color-text-secondary)]">
-          <span><kbd className="font-mono">↑↓</kbd> 이동</span>
-          <span><kbd className="font-mono">Enter</kbd> 열기</span>
-          <span><kbd className="font-mono">Esc</kbd> 닫기</span>
+          <span><kbd className="font-mono">↑↓</kbd> {dict.commandPalette.navigate}</span>
+          <span><kbd className="font-mono">Enter</kbd> {dict.commandPalette.open}</span>
+          <span><kbd className="font-mono">Esc</kbd> {dict.commandPalette.close}</span>
         </div>
       </div>
     </div>

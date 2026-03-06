@@ -312,7 +312,12 @@ function range(min: number, max: number): number[] {
   return Array.from({ length: max - min + 1 }, (_, i) => min + i);
 }
 
-export default function CronBuilderClient() {
+interface CronBuilderClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function CronBuilderClient({ dict }: CronBuilderClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [fields, setFields] = useState<FieldState[]>(
     Array.from({ length: 5 }, () => createDefaultField())
   );
@@ -393,7 +398,7 @@ export default function CronBuilderClient() {
       {/* Cron Expression Display */}
       <div className="p-6 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl text-center">
         <p className="text-xs text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">
-          Cron 표현식
+          {t('cronExpression', 'Cron 표현식')}
         </p>
         <div className="flex items-center justify-center gap-3">
           <code className="font-mono text-3xl md:text-4xl font-bold text-brand-500 tracking-wider">
@@ -403,7 +408,7 @@ export default function CronBuilderClient() {
             onClick={handleCopy}
             className="px-3 py-1.5 text-xs border border-[var(--color-border)] rounded-lg hover:bg-[var(--color-surface)] transition-colors"
           >
-            {copied ? '복사됨' : '복사'}
+            {copied ? t('copied', '복사됨') : t('copy', '복사')}
           </button>
         </div>
         <p className="text-sm text-[var(--color-text-secondary)] mt-3">
@@ -472,7 +477,7 @@ export default function CronBuilderClient() {
       {/* Next Executions */}
       <div className="p-5 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl">
         <h3 className="font-semibold text-sm mb-3">
-          다음 5회 실행 시간
+          {t('nextExecutions', '다음 5회 실행 시간')}
         </h3>
         {nextExecutions.length > 0 ? (
           <ol className="space-y-2">
@@ -490,7 +495,7 @@ export default function CronBuilderClient() {
           </ol>
         ) : (
           <p className="text-sm text-[var(--color-text-secondary)]">
-            1년 내 실행 일정이 없습니다.
+            {t('noExecutions', '1년 내 실행 일정이 없습니다.')}
           </p>
         )}
       </div>
@@ -501,7 +506,7 @@ export default function CronBuilderClient() {
           href="/cron-cheatsheet"
           className="inline-flex items-center gap-1.5 text-sm text-brand-500 hover:text-brand-400 transition-colors"
         >
-          Cron 표현식 문법 가이드 보기 →
+          {t('cronGuideLink', 'Cron 표현식 문법 가이드 보기 →')}
         </Link>
       </div>
     </div>

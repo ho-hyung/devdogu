@@ -57,7 +57,12 @@ spec:
           ports:
             - containerPort: 80`;
 
-export default function JsonYamlClient() {
+interface JsonYamlClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function JsonYamlClient({ dict }: JsonYamlClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [direction, setDirection] = useState<Direction>('json-to-yaml');
   const [leftInput, setLeftInput] = useState('');
   const [copied, setCopied] = useState(false);
@@ -87,7 +92,7 @@ export default function JsonYamlClient() {
       const result = JSON.stringify(parsed, null, 2);
       return { output: result, error: '' };
     } catch (e) {
-      const msg = e instanceof Error ? e.message : '알 수 없는 오류';
+      const msg = e instanceof Error ? e.message : t('unknownError', '알 수 없는 오류');
       return { output: '', error: msg };
     }
   }, [leftInput, isJsonToYaml]);
@@ -132,12 +137,12 @@ export default function JsonYamlClient() {
   const leftLabel = isJsonToYaml ? 'JSON' : 'YAML';
   const rightLabel = isJsonToYaml ? 'YAML' : 'JSON';
   const leftPlaceholder = isJsonToYaml
-    ? 'JSON 데이터를 입력하세요...'
-    : 'YAML 데이터를 입력하세요...';
+    ? t('jsonInputPlaceholder', 'JSON 데이터를 입력하세요...')
+    : t('yamlInputPlaceholder', 'YAML 데이터를 입력하세요...');
   const rightPlaceholder = isJsonToYaml
-    ? '변환된 YAML이 여기에 표시됩니다.'
-    : '변환된 JSON이 여기에 표시됩니다.';
-  const errorTitle = isJsonToYaml ? '유효하지 않은 JSON' : '유효하지 않은 YAML';
+    ? t('yamlOutputPlaceholder', '변환된 YAML이 여기에 표시됩니다.')
+    : t('jsonOutputPlaceholder', '변환된 JSON이 여기에 표시됩니다.');
+  const errorTitle = isJsonToYaml ? t('invalidJson', '유효하지 않은 JSON') : t('invalidYaml', '유효하지 않은 YAML');
 
   return (
     <div className="space-y-4">
@@ -164,13 +169,13 @@ export default function JsonYamlClient() {
         </button>
 
         <button onClick={handleClear} className="btn-secondary">
-          초기화
+          {t('clear', '초기화')}
         </button>
         <button
           onClick={handleSample}
           className="btn-secondary text-[var(--color-text-secondary)]"
         >
-          샘플 데이터
+          {t('sampleData', '샘플 데이터')}
         </button>
 
         {output && (
@@ -178,7 +183,7 @@ export default function JsonYamlClient() {
             onClick={handleUseOutput}
             className="btn-secondary text-[var(--color-text-secondary)]"
           >
-            결과를 입력으로
+            {t('useOutputAsInput', '결과를 입력으로')}
           </button>
         )}
       </div>
@@ -188,7 +193,7 @@ export default function JsonYamlClient() {
         {/* Input */}
         <div className="space-y-2">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            {leftLabel} 입력
+            {leftLabel} {t('input', '입력')}
           </label>
           <textarea
             value={leftInput}
@@ -213,14 +218,14 @@ export default function JsonYamlClient() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-              {rightLabel} 결과
+              {rightLabel} {t('result', '결과')}
             </label>
             {output && (
               <button
                 onClick={handleCopy}
                 className="text-xs text-brand-500 hover:text-brand-400 transition-colors"
               >
-                {copied ? '복사됨' : '복사하기'}
+                {copied ? t('copied', '복사됨') : t('copy', '복사하기')}
               </button>
             )}
           </div>

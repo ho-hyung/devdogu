@@ -113,7 +113,12 @@ const SECTIONS: Section[] = [
 
 const CATEGORY_NAMES = SECTIONS.map((s) => s.title);
 
-export default function RegexCheatsheetClient() {
+interface RegexCheatsheetClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function RegexCheatsheetClient({ dict }: RegexCheatsheetClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [copiedPattern, setCopiedPattern] = useState<string | null>(null);
@@ -146,14 +151,14 @@ export default function RegexCheatsheetClient() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="패턴 검색... (예: 이메일, 숫자, lookahead, 전화번호)"
+          placeholder={t('searchPlaceholder', '패턴 검색... (예: 이메일, 숫자, lookahead, 전화번호)')}
           className="input-area px-4 py-3 pr-10"
         />
         {search && (
           <button
             onClick={() => setSearch('')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] text-lg"
-            title="검색 초기화"
+            title={t('clearSearch', '검색 초기화')}
           >
             ×
           </button>
@@ -169,7 +174,7 @@ export default function RegexCheatsheetClient() {
               : 'bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] border border-[var(--color-border)]'
           }`}
         >
-          전체
+          {t('all', '전체')}
         </button>
         {CATEGORY_NAMES.map((name) => (
           <button
@@ -187,7 +192,7 @@ export default function RegexCheatsheetClient() {
       </div>
 
       <p className="text-xs text-[var(--color-text-secondary)]">
-        {totalCount}개 패턴 {search && `(검색: "${search}")`}
+        {totalCount}{t('patternCount', '개 패턴')} {search && `(${t('search', '검색')}: "${search}")`}
       </p>
 
       <div className="space-y-6">
@@ -198,9 +203,9 @@ export default function RegexCheatsheetClient() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-[var(--color-surface)]">
-                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-[30%]">패턴</th>
-                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-[30%]">설명</th>
-                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">예시</th>
+                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-[30%]">{t('pattern', '패턴')}</th>
+                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-[30%]">{t('description', '설명')}</th>
+                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('example', '예시')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -212,9 +217,9 @@ export default function RegexCheatsheetClient() {
                           <button
                             onClick={() => handleCopy(item.pattern)}
                             className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
-                            title="복사"
+                            title={t('copy', '복사')}
                           >
-                            {copiedPattern === item.pattern ? '✓' : '복사'}
+                            {copiedPattern === item.pattern ? '✓' : t('copy', '복사')}
                           </button>
                         </div>
                       </td>
@@ -234,13 +239,13 @@ export default function RegexCheatsheetClient() {
       {filtered.length === 0 && (
         <div className="text-center py-8 space-y-3">
           <p className="text-[var(--color-text-secondary)]">
-            검색 결과가 없습니다.
+            {t('noResults', '검색 결과가 없습니다.')}
           </p>
           <button
             onClick={() => { setSearch(''); setActiveCategory(null); }}
             className="text-brand-500 hover:text-brand-600 text-sm font-medium"
           >
-            전체 보기
+            {t('viewAll', '전체 보기')}
           </button>
         </div>
       )}

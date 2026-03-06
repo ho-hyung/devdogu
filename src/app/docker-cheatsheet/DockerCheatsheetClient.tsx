@@ -137,7 +137,12 @@ const SECTIONS: Section[] = [
 
 const CATEGORY_NAMES = SECTIONS.map((s) => s.title);
 
-export default function DockerCheatsheetClient() {
+interface DockerCheatsheetClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function DockerCheatsheetClient({ dict }: DockerCheatsheetClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
@@ -169,14 +174,14 @@ export default function DockerCheatsheetClient() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="명령어 검색... (예: compose, volume, build, exec)"
+          placeholder={t('searchPlaceholder', '명령어 검색... (예: compose, volume, build, exec)')}
           className="input-area px-4 py-3 pr-10"
         />
         {search && (
           <button
             onClick={() => setSearch('')}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] text-lg"
-            title="검색 초기화"
+            title={t('clearSearch', '검색 초기화')}
           >
             ×
           </button>
@@ -192,7 +197,7 @@ export default function DockerCheatsheetClient() {
               : 'bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] border border-[var(--color-border)]'
           }`}
         >
-          전체
+          {t('all', '전체')}
         </button>
         {CATEGORY_NAMES.map((name) => (
           <button
@@ -210,7 +215,7 @@ export default function DockerCheatsheetClient() {
       </div>
 
       <p className="text-xs text-[var(--color-text-secondary)]">
-        {totalCount}개 명령어 {search && `(검색: "${search}")`}
+        {totalCount}{t('commandCount', '개 명령어')} {search && `(${t('search', '검색')}: "${search}")`}
       </p>
 
       <div className="space-y-6">
@@ -221,8 +226,8 @@ export default function DockerCheatsheetClient() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-[var(--color-surface)]">
-                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">명령어</th>
-                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-[40%]">설명</th>
+                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">{t('command', '명령어')}</th>
+                    <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-[40%]">{t('description', '설명')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -234,9 +239,9 @@ export default function DockerCheatsheetClient() {
                           <button
                             onClick={() => handleCopy(cmd.cmd)}
                             className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
-                            title="복사"
+                            title={t('copy', '복사')}
                           >
-                            {copiedCmd === cmd.cmd ? '✓' : '복사'}
+                            {copiedCmd === cmd.cmd ? '✓' : t('copy', '복사')}
                           </button>
                         </div>
                       </td>
@@ -253,13 +258,13 @@ export default function DockerCheatsheetClient() {
       {filtered.length === 0 && (
         <div className="text-center py-8 space-y-3">
           <p className="text-[var(--color-text-secondary)]">
-            검색 결과가 없습니다.
+            {t('noResults', '검색 결과가 없습니다.')}
           </p>
           <button
             onClick={() => { setSearch(''); setActiveCategory(null); }}
             className="text-brand-500 hover:text-brand-600 text-sm font-medium"
           >
-            전체 보기
+            {t('viewAll', '전체 보기')}
           </button>
         </div>
       )}

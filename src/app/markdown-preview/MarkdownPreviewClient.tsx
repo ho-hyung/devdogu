@@ -50,7 +50,12 @@ function hello() {
 
 수평선 위의 텍스트`;
 
-export default function MarkdownPreviewClient() {
+interface MarkdownPreviewClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function MarkdownPreviewClient({ dict }: MarkdownPreviewClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [input, setInput] = useState(SAMPLE);
 
   const html = useMemo(() => {
@@ -61,11 +66,11 @@ export default function MarkdownPreviewClient() {
     <div className="space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Markdown 입력</label>
-          <textarea value={input} onChange={(e) => setInput(e.target.value)} className="input-area min-h-[500px]" spellCheck={false} placeholder="Markdown을 입력하세요..." />
+          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('markdownInput', 'Markdown 입력')}</label>
+          <textarea value={input} onChange={(e) => setInput(e.target.value)} className="input-area min-h-[500px]" spellCheck={false} placeholder={t('markdownPlaceholder', 'Markdown을 입력하세요...')} />
         </div>
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">미리보기</label>
+          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('preview', '미리보기')}</label>
           <div className="markdown-body p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg min-h-[500px] overflow-y-auto custom-scrollbar" dangerouslySetInnerHTML={{ __html: html }} />
         </div>
       </div>

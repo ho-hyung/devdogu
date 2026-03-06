@@ -4,12 +4,18 @@ import { useState } from 'react';
 
 type Mode = 'encode' | 'decode';
 
-export default function Base64Client() {
+interface Base64ClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function Base64Client({ dict }: Base64ClientProps) {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [mode, setMode] = useState<Mode>('encode');
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
+
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
 
   const handleConvert = () => {
     if (!input.trim()) {
@@ -26,7 +32,7 @@ export default function Base64Client() {
       }
       setError('');
     } catch {
-      setError(mode === 'encode' ? '인코딩할 수 없는 문자가 포함되어 있습니다.' : '유효하지 않은 Base64 문자열입니다.');
+      setError(mode === 'encode' ? t('encodeError', '인코딩할 수 없는 문자가 포함되어 있습니다.') : t('decodeError', '유효하지 않은 Base64 문자열입니다.'));
       setOutput('');
     }
   };
@@ -58,16 +64,16 @@ export default function Base64Client() {
                 mode === m ? 'bg-brand-500/10 text-brand-500' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
               }`}
             >
-              {m === 'encode' ? '인코딩' : '디코딩'}
+              {m === 'encode' ? t('encode', '인코딩') : t('decode', '디코딩')}
             </button>
           ))}
         </div>
 
         <button onClick={handleConvert} className="btn-primary">
-          변환하기
+          {t('convert', '변환하기')}
         </button>
-        <button onClick={handleSwap} className="btn-secondary" title="입력↔결과 바꾸기">
-          ⇄ 바꾸기
+        <button onClick={handleSwap} className="btn-secondary" title={t('swap', '⇄ 바꾸기')}>
+          {t('swap', '⇄ 바꾸기')}
         </button>
       </div>
 
@@ -75,7 +81,7 @@ export default function Base64Client() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            {mode === 'encode' ? '원본 텍스트' : 'Base64 문자열'}
+            {mode === 'encode' ? t('originalText', '원본 텍스트') : t('base64String', 'Base64 문자열')}
           </label>
           <textarea
             value={input}
@@ -83,7 +89,7 @@ export default function Base64Client() {
             onKeyDown={(e) => {
               if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') handleConvert();
             }}
-            placeholder={mode === 'encode' ? '인코딩할 텍스트를 입력하세요...' : 'Base64 문자열을 입력하세요...'}
+            placeholder={mode === 'encode' ? t('encodePlaceholder', '인코딩할 텍스트를 입력하세요...') : t('decodePlaceholder', 'Base64 문자열을 입력하세요...')}
             className="input-area min-h-[300px]"
             spellCheck={false}
           />
@@ -92,18 +98,18 @@ export default function Base64Client() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-              {mode === 'encode' ? 'Base64 결과' : '디코딩 결과'}
+              {mode === 'encode' ? t('base64Result', 'Base64 결과') : t('decodeResult', '디코딩 결과')}
             </label>
             {output && (
               <button onClick={handleCopy} className="text-xs text-brand-500 hover:text-brand-400 transition-colors">
-                {copied ? '✓ 복사됨' : '복사하기'}
+                {copied ? t('copied', '✓ 복사됨') : t('copy', '복사하기')}
               </button>
             )}
           </div>
           <textarea
             value={output}
             readOnly
-            placeholder="결과가 여기에 표시됩니다."
+            placeholder={t('outputPlaceholder', '결과가 여기에 표시됩니다.')}
             className="input-area min-h-[300px] bg-[var(--color-surface)]"
           />
         </div>

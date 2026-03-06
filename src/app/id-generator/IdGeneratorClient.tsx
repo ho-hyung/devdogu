@@ -72,7 +72,12 @@ function generateIds(type: IdType, count: number, nanoidLength: number): string[
   return results;
 }
 
-export default function IdGeneratorClient() {
+interface IdGeneratorClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function IdGeneratorClient({ dict }: IdGeneratorClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [idType, setIdType] = useState<IdType>('uuid');
   const [count, setCount] = useState(1);
   const [nanoidLength, setNanoidLength] = useState(21);
@@ -131,12 +136,12 @@ export default function IdGeneratorClient() {
             </button>
           ))}
         </div>
-        <button onClick={handleGenerate} className="btn-primary">생성하기</button>
+        <button onClick={handleGenerate} className="btn-primary">{t('generate', '생성하기')}</button>
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <label className="text-sm text-[var(--color-text-secondary)]">개수</label>
+          <label className="text-sm text-[var(--color-text-secondary)]">{t('count', '개수')}</label>
           <input
             type="number" value={count} onChange={(e) => handleCountChange(e.target.value)}
             min={1} max={100}
@@ -146,7 +151,7 @@ export default function IdGeneratorClient() {
         </div>
         {idType === 'nanoid' && (
           <div className="flex items-center gap-2">
-            <label className="text-sm text-[var(--color-text-secondary)]">길이</label>
+            <label className="text-sm text-[var(--color-text-secondary)]">{t('length', '길이')}</label>
             <input
               type="number" value={nanoidLength} onChange={(e) => handleNanoidLengthChange(e.target.value)}
               min={1} max={128}
@@ -160,17 +165,17 @@ export default function IdGeneratorClient() {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            생성 결과 ({results.length}개)
+            {t('generatedResult', '생성 결과')} ({results.length}{t('countUnit', '개')})
           </label>
           <button onClick={handleCopy} className="text-xs text-brand-500 hover:text-brand-400 transition-colors">
-            {copied ? '✓ 복사됨' : '전체 복사'}
+            {copied ? t('copied', '✓ 복사됨') : t('copyAll', '전체 복사')}
           </button>
         </div>
         {results.length === 1 ? (
           <div
             onClick={() => handleCopySingle(results[0])}
             className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg font-mono text-lg text-brand-500 cursor-pointer hover:bg-brand-500/5 transition-colors select-all text-center"
-            title="클릭하여 복사"
+            title={t('clickToCopy', '클릭하여 복사')}
           >
             {results[0]}
           </div>
@@ -181,11 +186,11 @@ export default function IdGeneratorClient() {
                 key={i}
                 onClick={() => handleCopySingle(id)}
                 className="flex items-center gap-3 px-4 py-2.5 hover:bg-brand-500/5 cursor-pointer transition-colors group"
-                title="클릭하여 복사"
+                title={t('clickToCopy', '클릭하여 복사')}
               >
                 <span className="text-xs text-[var(--color-text-secondary)] w-8 text-right shrink-0">{i + 1}</span>
                 <span className="font-mono text-sm select-all">{id}</span>
-                <span className="text-xs text-[var(--color-text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity ml-auto shrink-0">복사</span>
+                <span className="text-xs text-[var(--color-text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity ml-auto shrink-0">{t('copy', '복사')}</span>
               </div>
             ))}
           </div>

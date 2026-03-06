@@ -79,7 +79,12 @@ const CASES: readonly CaseDefinition[] = [
   { label: 'UPPERCASE', example: 'MY VARIABLE NAME', convert: toUpperCase },
 ] as const;
 
-export default function TextCaseClient() {
+interface TextCaseClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function TextCaseClient({ dict }: TextCaseClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [input, setInput] = useState('');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
@@ -96,7 +101,7 @@ export default function TextCaseClient() {
       setCopiedIndex(index);
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch (error) {
-      throw new Error('클립보드 복사에 실패했습니다.');
+      throw new Error(t('clipboardError', '클립보드 복사에 실패했습니다.'));
     }
   }, []);
 
@@ -104,12 +109,12 @@ export default function TextCaseClient() {
     <div className="space-y-6">
       <div>
         <label className="block text-sm font-medium mb-2 text-[var(--color-text-secondary)]">
-          변환할 텍스트
+          {t('textToConvert', '변환할 텍스트')}
         </label>
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="텍스트를 입력하세요 (예: hello world, helloWorld, hello_world)"
+          placeholder={t('textPlaceholder', '텍스트를 입력하세요 (예: hello world, helloWorld, hello_world)')}
           rows={3}
           className="w-full px-4 py-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg font-mono text-sm resize-y focus:outline-none focus:ring-2 focus:ring-brand-500/30 placeholder:text-[var(--color-text-secondary)]"
         />
@@ -135,7 +140,7 @@ export default function TextCaseClient() {
                 disabled={!result.value}
                 className="text-xs text-brand-500 hover:text-brand-400 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
-                {copiedIndex === index ? '복사됨' : '복사'}
+                {copiedIndex === index ? t('copied', '복사됨') : t('copy', '복사')}
               </button>
             </div>
             <div className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg font-mono text-sm min-h-[2.25rem] break-all">

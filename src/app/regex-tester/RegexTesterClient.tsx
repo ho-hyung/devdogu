@@ -11,7 +11,12 @@ const PRESETS = [
   { label: '한글만', pattern: '[가-힣]+' },
 ];
 
-export default function RegexTesterClient() {
+interface RegexTesterClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function RegexTesterClient({ dict }: RegexTesterClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [pattern, setPattern] = useState('');
   const [flags, setFlags] = useState('g');
   const [testStr, setTestStr] = useState('');
@@ -36,7 +41,7 @@ export default function RegexTesterClient() {
       }
       return results;
     } catch (e) {
-      setError(e instanceof Error ? e.message : '유효하지 않은 정규식');
+      setError(e instanceof Error ? e.message : t('invalidRegex', '유효하지 않은 정규식'));
       return [];
     }
   }, [pattern, flags, testStr]);
@@ -74,7 +79,7 @@ export default function RegexTesterClient() {
             type="text"
             value={pattern}
             onChange={(e) => setPattern(e.target.value)}
-            placeholder="정규식 패턴"
+            placeholder={t('patternPlaceholder', '정규식 패턴')}
             className="flex-1 px-1 py-3 bg-transparent font-mono text-sm focus:outline-none"
             spellCheck={false}
           />
@@ -91,7 +96,7 @@ export default function RegexTesterClient() {
 
       {/* Flags & Presets */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs text-[var(--color-text-secondary)]">플래그:</span>
+        <span className="text-xs text-[var(--color-text-secondary)]">{t('flags', '플래그:')}</span>
         {[
           { flag: 'g', label: 'global' },
           { flag: 'i', label: 'case-insensitive' },
@@ -111,7 +116,7 @@ export default function RegexTesterClient() {
         ))}
 
         <span className="text-[var(--color-border)] mx-2">|</span>
-        <span className="text-xs text-[var(--color-text-secondary)]">프리셋:</span>
+        <span className="text-xs text-[var(--color-text-secondary)]">{t('presets', '프리셋:')}</span>
         {PRESETS.map((p) => (
           <button
             key={p.label}
@@ -126,12 +131,12 @@ export default function RegexTesterClient() {
       {/* Test String */}
       <div className="space-y-2">
         <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-          테스트 문자열
+          {t('testString', '테스트 문자열')}
         </label>
         <textarea
           value={testStr}
           onChange={(e) => setTestStr(e.target.value)}
-          placeholder="정규식을 테스트할 문자열을 입력하세요..."
+          placeholder={t('testStringPlaceholder', '정규식을 테스트할 문자열을 입력하세요...')}
           className="input-area min-h-[150px]"
           spellCheck={false}
         />
@@ -141,7 +146,7 @@ export default function RegexTesterClient() {
       {highlightedText && highlightedText.length > 0 && (
         <div className="space-y-2">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            매칭 결과 ({matches.length}건)
+            {t('matchResult', '매칭 결과')} ({matches.length}{t('matchCount', '건')})
           </label>
           <div className="p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg font-mono text-sm whitespace-pre-wrap break-all leading-relaxed">
             {highlightedText.map((part, i) =>
@@ -161,7 +166,7 @@ export default function RegexTesterClient() {
       {matches.length > 0 && (
         <div className="space-y-2">
           <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            매칭 목록
+            {t('matchList', '매칭 목록')}
           </label>
           <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg divide-y divide-[var(--color-border)]">
             {matches.slice(0, 50).map((m, i) => (
@@ -173,7 +178,7 @@ export default function RegexTesterClient() {
             ))}
             {matches.length > 50 && (
               <div className="px-4 py-2 text-xs text-[var(--color-text-secondary)]">
-                ...외 {matches.length - 50}건
+                ...{t('andMore', '외')} {matches.length - 50}{t('matchCount', '건')}
               </div>
             )}
           </div>

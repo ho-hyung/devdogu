@@ -67,7 +67,12 @@ async function computeHash(algorithm: Algorithm, input: string): Promise<string>
   return computeSHA(algorithm, input);
 }
 
-export default function HashGeneratorClient() {
+interface HashGeneratorClientProps {
+  dict?: Record<string, string>;
+}
+
+export default function HashGeneratorClient({ dict }: HashGeneratorClientProps) {
+  const t = (key: string, fallback: string) => dict?.[key] ?? fallback;
   const [input, setInput] = useState('');
   const [algorithm, setAlgorithm] = useState<Algorithm>('SHA-256');
   const [results, setResults] = useState<Record<string, string>>({});
@@ -90,15 +95,15 @@ export default function HashGeneratorClient() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">입력 텍스트</label>
+        <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('inputText', '입력 텍스트')}</label>
         <textarea
           value={input} onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') handleHash(); }}
-          placeholder="해시를 생성할 텍스트를 입력하세요..."
+          placeholder={t('inputPlaceholder', '해시를 생성할 텍스트를 입력하세요...')}
           className="input-area min-h-[150px]" spellCheck={false}
         />
       </div>
-      <button onClick={handleHash} className="btn-primary">해시 생성 (⌘+Enter)</button>
+      <button onClick={handleHash} className="btn-primary">{t('generateHash', '해시 생성 (⌘+Enter)')}</button>
       {Object.keys(results).length > 0 && (
         <div className="space-y-3">
           {ALGORITHMS.map((alg) => (
@@ -106,7 +111,7 @@ export default function HashGeneratorClient() {
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase">{alg}</span>
                 <button onClick={() => handleCopy(results[alg], alg)} className="text-xs text-brand-500 hover:text-brand-400 transition-colors">
-                  {copied === alg ? '✓ 복사됨' : '복사'}
+                  {copied === alg ? t('copied', '✓ 복사됨') : t('copy', '복사')}
                 </button>
               </div>
               <p className="font-mono text-sm break-all select-all">{results[alg]}</p>

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { type Locale, defaultLocale, nonDefaultLocales, ogLocale } from '@/i18n/config';
 
 const SITE_NAME = 'DevDogu';
 const SITE_URL = 'https://devdogu.vercel.app';
@@ -9,14 +10,24 @@ export function createMetadata({
   description,
   path = '',
   keywords = [],
+  locale = defaultLocale,
 }: {
   title: string;
   description: string;
   path?: string;
   keywords?: string[];
+  locale?: Locale;
 }): Metadata {
   const fullTitle = `${title} | ${SITE_NAME}`;
-  const url = `${SITE_URL}${path}`;
+  const localePath = locale === defaultLocale ? path : `/${locale}${path}`;
+  const url = `${SITE_URL}${localePath}`;
+
+  const languages: Record<string, string> = {};
+  languages[defaultLocale] = `${SITE_URL}${path}`;
+  for (const l of nonDefaultLocales) {
+    languages[l] = `${SITE_URL}/${l}${path}`;
+  }
+  languages['x-default'] = `${SITE_URL}${path}`;
 
   return {
     title: fullTitle,
@@ -28,7 +39,7 @@ export function createMetadata({
       url,
       siteName: SITE_NAME,
       type: 'website',
-      locale: 'ko_KR',
+      locale: ogLocale[locale],
     },
     twitter: {
       card: 'summary_large_image',
@@ -37,6 +48,7 @@ export function createMetadata({
     },
     alternates: {
       canonical: url,
+      languages,
     },
     robots: {
       index: true,
