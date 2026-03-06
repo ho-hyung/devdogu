@@ -231,6 +231,16 @@ export const tools: Tool[] = [
     keywords: ['lorem ipsum', '더미 텍스트', 'placeholder', '텍스트 생성', 'dummy text'],
   },
   {
+    id: 'password-generator',
+    name: '비밀번호 생성기',
+    nameEn: 'Password Generator',
+    description: '안전한 랜덤 비밀번호를 즉시 생성합니다. 길이, 문자 종류 조절, 강도 표시.',
+    href: '/password-generator',
+    icon: '🔐',
+    category: 'generator',
+    keywords: ['비밀번호', '패스워드', 'password', '랜덤', '생성기', 'generator', '보안'],
+  },
+  {
     id: 'cron-builder',
     name: 'Cron 표현식 빌더',
     nameEn: 'Cron Expression Builder',
