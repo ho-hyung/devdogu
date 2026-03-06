@@ -141,13 +141,24 @@ export default function RegexCheatsheetClient() {
 
   return (
     <div className="space-y-6">
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="패턴 검색... (예: 이메일, 숫자, lookahead, 전화번호)"
-        className="input-area px-4 py-3"
-      />
+      <div className="relative">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="패턴 검색... (예: 이메일, 숫자, lookahead, 전화번호)"
+          className="input-area px-4 py-3 pr-10"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] text-lg"
+            title="검색 초기화"
+          >
+            ×
+          </button>
+        )}
+      </div>
 
       <div className="flex flex-wrap gap-2">
         <button
@@ -221,9 +232,17 @@ export default function RegexCheatsheetClient() {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-[var(--color-text-secondary)] py-8">
-          검색 결과가 없습니다.
-        </p>
+        <div className="text-center py-8 space-y-3">
+          <p className="text-[var(--color-text-secondary)]">
+            검색 결과가 없습니다.
+          </p>
+          <button
+            onClick={() => { setSearch(''); setActiveCategory(null); }}
+            className="text-brand-500 hover:text-brand-600 text-sm font-medium"
+          >
+            전체 보기
+          </button>
+        </div>
       )}
     </div>
   );

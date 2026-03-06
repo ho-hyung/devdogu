@@ -101,6 +101,9 @@ export default function CronCheatsheetClient() {
     setTimeout(() => setCopiedExpr(null), 1500);
   }, []);
 
+  const query = search.toLowerCase();
+  const isSearching = query.length > 0;
+
   const filteredSections = SECTIONS
     .filter((section) => !activeCategory || section.title === activeCategory)
     .map((section) => ({
@@ -108,23 +111,55 @@ export default function CronCheatsheetClient() {
       examples: section.examples.filter(
         (e) =>
           e.expression.includes(search) ||
-          e.desc.toLowerCase().includes(search.toLowerCase())
+          e.desc.toLowerCase().includes(query)
       ),
     }))
     .filter((section) => section.examples.length > 0);
 
-  const totalCount = filteredSections.reduce((sum, s) => sum + s.examples.length, 0);
+  const filteredFields = FIELD_DESCRIPTIONS.filter(
+    (f) =>
+      f.field.toLowerCase().includes(query) ||
+      f.range.toLowerCase().includes(query) ||
+      f.example.toLowerCase().includes(query)
+  );
+
+  const filteredChars = SPECIAL_CHARS.filter(
+    (s) =>
+      s.char.toLowerCase().includes(query) ||
+      s.desc.toLowerCase().includes(query) ||
+      s.example.toLowerCase().includes(query)
+  );
+
+  const filteredPresets = PRESETS.filter(
+    (p) =>
+      p.name.toLowerCase().includes(query) ||
+      p.expression.includes(search) ||
+      p.desc.toLowerCase().includes(query)
+  );
+
+  const totalCount = filteredSections.reduce((sum, s) => sum + s.examples.length, 0)
+    + filteredFields.length + filteredChars.length + filteredPresets.length;
 
   return (
     <div className="space-y-8">
       {/* 검색 */}
-      <input
-        type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="예제 검색... (예: 매일, 5분, 월요일, 자정)"
-        className="input-area px-4 py-3"
-      />
+      <div className="relative">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="검색... (예: 매일, 5분, 월요일, 자정, 범위, @daily)"
+          className="input-area px-4 py-3 w-full"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors text-sm"
+          >
+            ✕
+          </button>
+        )}
+      </div>
 
       {/* 카테고리 필터 (예제 섹션용) */}
       <div className="flex flex-wrap gap-2">
@@ -136,7 +171,7 @@ export default function CronCheatsheetClient() {
               : 'bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] border border-[var(--color-border)]'
           }`}
         >
-          전체 예제
+          전체
         </button>
         {ALL_SECTION_TITLES.map((name) => (
           <button
@@ -153,155 +188,177 @@ export default function CronCheatsheetClient() {
         ))}
       </div>
 
-      {/* Cron 형식 */}
-      <div>
-        <h2 className="text-lg font-semibold mb-3">Cron 표현식 형식</h2>
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4">
-          <code className="font-mono text-sm text-brand-500">
-            ┌───────────── 분 (0-59)<br />
-            │ ┌───────────── 시 (0-23)<br />
-            │ │ ┌───────────── 일 (1-31)<br />
-            │ │ │ ┌───────────── 월 (1-12)<br />
-            │ │ │ │ ┌───────────── 요일 (0-6, 일=0)<br />
-            * &nbsp;* &nbsp;* &nbsp;* &nbsp;*
-          </code>
+      {/* 결과 카운트 */}
+      {isSearching && (
+        <p className="text-xs text-[var(--color-text-secondary)]">
+          {totalCount}개 결과 (검색: &quot;{search}&quot;)
+        </p>
+      )}
+
+      {/* Cron 형식 - 검색 중에는 숨김 */}
+      {!isSearching && (
+        <div>
+          <h2 className="text-lg font-semibold mb-3">Cron 표현식 형식</h2>
+          <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg p-4">
+            <code className="font-mono text-sm text-brand-500">
+              ┌───────────── 분 (0-59)<br />
+              │ ┌───────────── 시 (0-23)<br />
+              │ │ ┌───────────── 일 (1-31)<br />
+              │ │ │ ┌───────────── 월 (1-12)<br />
+              │ │ │ │ ┌───────────── 요일 (0-6, 일=0)<br />
+              * &nbsp;* &nbsp;* &nbsp;* &nbsp;*
+            </code>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 필드 설명 */}
-      <div>
-        <h2 className="text-lg font-semibold mb-3">필드별 범위</h2>
-        <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-[var(--color-surface)]">
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">필드</th>
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">범위</th>
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">예시</th>
-              </tr>
-            </thead>
-            <tbody>
-              {FIELD_DESCRIPTIONS.map((f) => (
-                <tr key={f.field} className="border-t border-[var(--color-border)]">
-                  <td className="px-4 py-2.5 font-medium">{f.field}</td>
-                  <td className="px-4 py-2.5"><code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{f.range}</code></td>
-                  <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{f.example}</td>
+      {(!isSearching || filteredFields.length > 0) && (
+        <div>
+          <h2 className="text-lg font-semibold mb-3">필드별 범위</h2>
+          <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-[var(--color-surface)]">
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">필드</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">범위</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">예시</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {(isSearching ? filteredFields : FIELD_DESCRIPTIONS).map((f) => (
+                  <tr key={f.field} className="border-t border-[var(--color-border)]">
+                    <td className="px-4 py-2.5 font-medium">{f.field}</td>
+                    <td className="px-4 py-2.5"><code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{f.range}</code></td>
+                    <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{f.example}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 특수 문자 */}
-      <div>
-        <h2 className="text-lg font-semibold mb-3">특수 문자</h2>
-        <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-[var(--color-surface)]">
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-20">문자</th>
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-48">의미</th>
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">예시</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SPECIAL_CHARS.map((s) => (
-                <tr key={s.char} className="border-t border-[var(--color-border)]">
-                  <td className="px-4 py-2.5"><code className="font-mono text-sm font-bold text-brand-500">{s.char}</code></td>
-                  <td className="px-4 py-2.5 font-medium">{s.desc}</td>
-                  <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{s.example}</td>
+      {(!isSearching || filteredChars.length > 0) && (
+        <div>
+          <h2 className="text-lg font-semibold mb-3">특수 문자</h2>
+          <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-[var(--color-surface)]">
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-20">문자</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-48">의미</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">예시</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {(isSearching ? filteredChars : SPECIAL_CHARS).map((s) => (
+                  <tr key={s.char} className="border-t border-[var(--color-border)]">
+                    <td className="px-4 py-2.5"><code className="font-mono text-sm font-bold text-brand-500">{s.char}</code></td>
+                    <td className="px-4 py-2.5 font-medium">{s.desc}</td>
+                    <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{s.example}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 예제 섹션들 */}
-      <div>
-        <h2 className="text-lg font-semibold mb-1">자주 쓰는 예제</h2>
-        <p className="text-xs text-[var(--color-text-secondary)] mb-4">
-          {totalCount}개 예제 {search && `(검색: "${search}")`}
-        </p>
-        <div className="space-y-6">
-          {filteredSections.map((section) => (
-            <div key={section.title}>
-              <h3 className="text-sm font-semibold text-[var(--color-text-secondary)] mb-2">{section.title}</h3>
-              <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-[var(--color-surface)]">
-                      <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-56">표현식</th>
-                      <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">설명</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {section.examples.map((e) => (
-                      <tr key={e.expression + e.desc} className="border-t border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors group">
-                        <td className="px-4 py-2.5">
-                          <div className="flex items-center gap-2">
-                            <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{e.expression}</code>
-                            <button
-                              onClick={() => handleCopy(e.expression)}
-                              className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
-                              title="복사"
-                            >
-                              {copiedExpr === e.expression ? '✓' : '복사'}
-                            </button>
-                          </div>
-                        </td>
-                        <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{e.desc}</td>
+      {filteredSections.length > 0 && (
+        <div>
+          <h2 className="text-lg font-semibold mb-4">자주 쓰는 예제</h2>
+          <div className="space-y-6">
+            {filteredSections.map((section) => (
+              <div key={section.title}>
+                <h3 className="text-sm font-semibold text-[var(--color-text-secondary)] mb-2">{section.title}</h3>
+                <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-[var(--color-surface)]">
+                        <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)] w-56">표현식</th>
+                        <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">설명</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {section.examples.map((e) => (
+                        <tr key={e.expression + e.desc} className="border-t border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors group">
+                          <td className="px-4 py-2.5">
+                            <div className="flex items-center gap-2">
+                              <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{e.expression}</code>
+                              <button
+                                onClick={() => handleCopy(e.expression)}
+                                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
+                                title="복사"
+                              >
+                                {copiedExpr === e.expression ? '✓' : '복사'}
+                              </button>
+                            </div>
+                          </td>
+                          <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{e.desc}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* 프리셋 */}
-      <div>
-        <h2 className="text-lg font-semibold mb-3">프리셋 (축약형)</h2>
-        <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-[var(--color-surface)]">
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">프리셋</th>
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">동일 표현식</th>
-                <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">설명</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PRESETS.map((p) => (
-                <tr key={p.name} className="border-t border-[var(--color-border)] group">
-                  <td className="px-4 py-2.5">
-                    <div className="flex items-center gap-2">
-                      <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{p.name}</code>
-                      <button
-                        onClick={() => handleCopy(p.name.split(' / ')[0])}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
-                        title="복사"
-                      >
-                        {copiedExpr === p.name.split(' / ')[0] ? '✓' : '복사'}
-                      </button>
-                    </div>
-                  </td>
-                  <td className="px-4 py-2.5"><code className="font-mono text-xs">{p.expression}</code></td>
-                  <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{p.desc}</td>
+      {(!isSearching || filteredPresets.length > 0) && (
+        <div>
+          <h2 className="text-lg font-semibold mb-3">프리셋 (축약형)</h2>
+          <div className="overflow-x-auto border border-[var(--color-border)] rounded-lg">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-[var(--color-surface)]">
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">프리셋</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">동일 표현식</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-[var(--color-text-secondary)]">설명</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {(isSearching ? filteredPresets : PRESETS).map((p) => (
+                  <tr key={p.name} className="border-t border-[var(--color-border)] group">
+                    <td className="px-4 py-2.5">
+                      <div className="flex items-center gap-2">
+                        <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{p.name}</code>
+                        <button
+                          onClick={() => handleCopy(p.name.split(' / ')[0])}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"
+                          title="복사"
+                        >
+                          {copiedExpr === p.name.split(' / ')[0] ? '✓' : '복사'}
+                        </button>
+                      </div>
+                    </td>
+                    <td className="px-4 py-2.5"><code className="font-mono text-xs">{p.expression}</code></td>
+                    <td className="px-4 py-2.5 text-[var(--color-text-secondary)]">{p.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
-      {filteredSections.length === 0 && search && (
-        <p className="text-center text-[var(--color-text-secondary)] py-8">
-          검색 결과가 없습니다.
-        </p>
+      {isSearching && totalCount === 0 && (
+        <div className="text-center py-8">
+          <p className="text-[var(--color-text-secondary)] mb-2">
+            &quot;{search}&quot;에 대한 검색 결과가 없습니다.
+          </p>
+          <button
+            onClick={() => setSearch('')}
+            className="text-brand-500 text-sm hover:underline"
+          >
+            전체 보기
+          </button>
+        </div>
       )}
     </div>
   );
