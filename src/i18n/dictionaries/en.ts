@@ -30,7 +30,7 @@ const en: Dictionary = {
     heroTitle2: 'tools',
     heroDescription:
       'JSON formatter, Base64 encoder, regex tester and more.\nEssential developer tools, fast and clean.',
-    searchPlaceholder: 'Search tools... (e.g. JSON, Base64, regex, git, docker)',
+    searchPlaceholder: 'Search tools (⌘K to search from anywhere)',
     all: 'All',
     toolCount: '{count} tools',
     searchLabel: 'Search: "{query}"',

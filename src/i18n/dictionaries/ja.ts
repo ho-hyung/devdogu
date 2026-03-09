@@ -30,7 +30,7 @@ const ja: Dictionary = {
     heroTitle2: 'ツール集',
     heroDescription:
       'JSONフォーマッター、Base64エンコーダー、正規表現テスターなど\n開発者が必要なツールを素早くきれいに。',
-    searchPlaceholder: 'ツール検索... (例: JSON, Base64, regex, git, docker)',
+    searchPlaceholder: 'ツールを検索 (⌘Kでどこからでも素早く検索)',
     all: 'すべて',
     toolCount: '{count}件のツール',
     searchLabel: '検索: "{query}"',

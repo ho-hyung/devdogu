@@ -212,7 +212,7 @@ export default function RegexCheatsheetClient({ dict }: RegexCheatsheetClientPro
                   {section.items.map((item) => (
                     <tr key={item.pattern + item.desc} className="border-t border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors group">
                       <td className="px-4 py-2.5">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-4">
                           <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded break-all">{item.pattern}</code>
                           <button
                             onClick={() => handleCopy(item.pattern)}

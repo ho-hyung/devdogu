@@ -5,12 +5,50 @@ import RecentToolTracker from './RecentToolTracker';
 import type { Locale } from '@/i18n/config';
 import { defaultLocale } from '@/i18n/config';
 import { getDictionarySync } from '@/i18n/get-dictionary';
+import { SITE_URL } from '@/lib/metadata';
 
 interface ToolLayoutProps {
   toolId: string;
   children: React.ReactNode;
   faq?: { q: string; a: string }[];
   locale?: Locale;
+}
+
+function buildFaqJsonLd(faq: { q: string; a: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  };
+}
+
+function buildBreadcrumbJsonLd(toolName: string, toolPath: string, locale: Locale) {
+  const localePath = locale === defaultLocale ? toolPath : `/${locale}${toolPath}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'DevDogu',
+        item: `${SITE_URL}${locale === defaultLocale ? '' : `/${locale}`}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: toolName,
+        item: `${SITE_URL}${localePath}`,
+      },
+    ],
+  };
 }
 
 export default function ToolLayout({ toolId, children, faq, locale = defaultLocale }: ToolLayoutProps) {
@@ -24,6 +62,24 @@ export default function ToolLayout({ toolId, children, faq, locale = defaultLoca
   return (
     <main className="max-w-6xl mx-auto px-4 py-8">
       <RecentToolTracker toolId={toolId} />
+
+      {/* JSON-LD Structured Data */}
+      {tool && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildBreadcrumbJsonLd(tool.name[locale], tool.href, locale)),
+          }}
+        />
+      )}
+      {faq && faq.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildFaqJsonLd(faq)),
+          }}
+        />
+      )}
 
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] mb-6">

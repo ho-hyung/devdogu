@@ -80,13 +80,17 @@ export default function HomeClient({ locale }: HomeClientProps) {
             placeholder={dict.home.searchPlaceholder}
             className="w-full pl-10 pr-4 py-3 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 placeholder:text-[var(--color-text-secondary)]"
           />
-          {search && (
+          {search ? (
             <button
               onClick={() => setSearch('')}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors text-sm"
             >
               ✕
             </button>
+          ) : (
+            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-[var(--color-text-secondary)] bg-[var(--color-border)]/50 border border-[var(--color-border)] rounded">
+              ⌘K
+            </kbd>
           )}
         </div>
       </div>

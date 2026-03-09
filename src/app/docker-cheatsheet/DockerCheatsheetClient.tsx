@@ -234,7 +234,7 @@ export default function DockerCheatsheetClient({ dict }: DockerCheatsheetClientP
                   {section.commands.map((cmd) => (
                     <tr key={cmd.cmd} className="border-t border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors group">
                       <td className="px-4 py-2.5">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-between gap-4">
                           <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{cmd.cmd}</code>
                           <button
                             onClick={() => handleCopy(cmd.cmd)}

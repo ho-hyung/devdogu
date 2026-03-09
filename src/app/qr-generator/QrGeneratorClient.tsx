@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import QRCode from 'qrcode';
+import CopyButton from '@/components/CopyButton';
 
 type ErrorLevel = 'L' | 'M' | 'Q' | 'H';
 
@@ -73,7 +74,15 @@ export default function QrGeneratorClient({ dict }: QrGeneratorClientProps) {
               <div className="p-4 bg-white rounded-xl">
                 <img src={dataUrl} alt="QR Code" width={size > 512 ? 512 : size} height={size > 512 ? 512 : size} />
               </div>
-              <button onClick={handleDownload} className="btn-primary">{t('downloadPng', 'PNG 다운로드')}</button>
+              <div className="flex items-center gap-2">
+                <button onClick={handleDownload} className="btn-primary">{t('downloadPng', 'PNG 다운로드')}</button>
+                <CopyButton
+                  text={text}
+                  label={t('copyText', '텍스트 복사')}
+                  copiedLabel={t('copied', '✓ 복사됨')}
+                  className="btn-secondary text-sm !text-[var(--color-text-secondary)]"
+                />
+              </div>
             </>
           ) : (
             <div className="w-64 h-64 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl flex items-center justify-center text-[var(--color-text-secondary)] text-sm">{t('qrPlaceholderDisplay', 'QR코드가 여기에 표시됩니다')}</div>

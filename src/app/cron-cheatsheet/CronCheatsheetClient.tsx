@@ -291,7 +291,7 @@ export default function CronCheatsheetClient({ dict }: CronCheatsheetClientProps
                       {section.examples.map((e) => (
                         <tr key={e.expression + e.desc} className="border-t border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors group">
                           <td className="px-4 py-2.5">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-between gap-4">
                               <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{e.expression}</code>
                               <button
                                 onClick={() => handleCopy(e.expression)}
@@ -331,7 +331,7 @@ export default function CronCheatsheetClient({ dict }: CronCheatsheetClientProps
                 {(isSearching ? filteredPresets : PRESETS).map((p) => (
                   <tr key={p.name} className="border-t border-[var(--color-border)] group">
                     <td className="px-4 py-2.5">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center justify-between gap-4">
                         <code className="font-mono text-xs text-brand-500 bg-brand-500/10 px-2 py-1 rounded">{p.name}</code>
                         <button
                           onClick={() => handleCopy(p.name.split(' / ')[0])}

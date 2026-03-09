@@ -30,7 +30,7 @@ const zh: Dictionary = {
     heroTitle2: '工具集',
     heroDescription:
       'JSON格式化、Base64编码、正则表达式测试等\n开发者常用工具，快速又简洁。',
-    searchPlaceholder: '搜索工具... (如: JSON, Base64, regex, git, docker)',
+    searchPlaceholder: '搜索工具 (⌘K 随时快速搜索)',
     all: '全部',
     toolCount: '{count}个工具',
     searchLabel: '搜索: "{query}"',

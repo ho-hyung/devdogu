@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import CopyButton from '@/components/CopyButton';
 
 const PRESETS = [
   { label: '이메일', pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}' },
@@ -165,9 +166,16 @@ export default function RegexTesterClient({ dict }: RegexTesterClientProps) {
       {/* Match List */}
       {matches.length > 0 && (
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
-            {t('matchList', '매칭 목록')}
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">
+              {t('matchList', '매칭 목록')}
+            </label>
+            <CopyButton
+              text={matches.map((m) => m.match).join('\n')}
+              label={t('copyMatches', '전체 복사')}
+              copiedLabel={t('copied', '✓ 복사됨')}
+            />
+          </div>
           <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg divide-y divide-[var(--color-border)]">
             {matches.slice(0, 50).map((m, i) => (
               <div key={i} className="flex items-center gap-4 px-4 py-2 text-xs font-mono">

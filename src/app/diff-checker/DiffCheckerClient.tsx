@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import CopyButton from '@/components/CopyButton';
 
 interface DiffLine {
   type: 'equal' | 'add' | 'remove';
@@ -75,6 +76,11 @@ export default function DiffCheckerClient({ dict }: DiffCheckerClientProps) {
     unchanged: diff.filter(l => l.type === 'equal').length,
   }), [diff]);
 
+  const diffText = useMemo(() =>
+    diff.map((line) => `${PREFIX[line.type]}${line.content}`).join('\n'),
+    [diff]
+  );
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -88,10 +94,13 @@ export default function DiffCheckerClient({ dict }: DiffCheckerClientProps) {
         </div>
       </div>
       {diff.length > 0 && (
-        <div className="flex items-center gap-4 text-sm">
-          <span className="text-emerald-400">+{stats.added} {t('added', '추가')}</span>
-          <span className="text-red-400">-{stats.removed} {t('removed', '삭제')}</span>
-          <span className="text-[var(--color-text-secondary)]">{stats.unchanged} {t('unchanged', '동일')}</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4 text-sm">
+            <span className="text-emerald-400">+{stats.added} {t('added', '추가')}</span>
+            <span className="text-red-400">-{stats.removed} {t('removed', '삭제')}</span>
+            <span className="text-[var(--color-text-secondary)]">{stats.unchanged} {t('unchanged', '동일')}</span>
+          </div>
+          <CopyButton text={diffText} label={t('copyDiff', '복사')} copiedLabel={t('copied', '✓ 복사됨')} />
         </div>
       )}
       {diff.length > 0 && (

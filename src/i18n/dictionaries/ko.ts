@@ -27,7 +27,7 @@ const ko = {
     heroTitle1: '개발할 때 매일 쓰는',
     heroTitle2: '도구 모음',
     heroDescription: 'JSON 포매터, Base64 인코더, 정규식 테스터 등\n개발자가 자주 찾는 도구를 빠르고 깔끔하게.',
-    searchPlaceholder: '도구 검색... (예: JSON, Base64, regex, git, docker)',
+    searchPlaceholder: '원하는 도구를 검색하세요 (⌘K로 어디서든 빠르게 검색)',
     all: '전체',
     toolCount: '{count}개 도구',
     searchLabel: '검색: "{query}"',

@@ -192,8 +192,8 @@ export default function HttpStatusClient({ dict }: HttpStatusClientProps) {
                         <code className="font-mono text-sm font-bold text-brand-500">{item.code}</code>
                       </td>
                       <td className="px-4 py-2.5 font-medium">
-                        <div className="flex items-center gap-2">
-                          {item.name}
+                        <div className="flex items-center justify-between gap-4">
+                          <span>{item.name}</span>
                           <button
                             onClick={() => handleCopy(item.code, item.name)}
                             className="opacity-0 group-hover:opacity-100 transition-opacity text-xs text-[var(--color-text-secondary)] hover:text-brand-500 shrink-0"

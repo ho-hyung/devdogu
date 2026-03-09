@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { marked } from 'marked';
+import CopyButton from '@/components/CopyButton';
 
 const SAMPLE = `# Markdown 미리보기
 
@@ -70,7 +71,13 @@ export default function MarkdownPreviewClient({ dict }: MarkdownPreviewClientPro
           <textarea value={input} onChange={(e) => setInput(e.target.value)} className="input-area min-h-[500px]" spellCheck={false} placeholder={t('markdownPlaceholder', 'Markdown을 입력하세요...')} />
         </div>
         <div className="space-y-2">
-          <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('preview', '미리보기')}</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">{t('preview', '미리보기')}</label>
+            <div className="flex items-center gap-2">
+              <CopyButton text={input} label={t('copyMarkdown', 'Markdown 복사')} copiedLabel={t('copied', '✓ 복사됨')} />
+              <CopyButton text={html} label={t('copyHtml', 'HTML 복사')} copiedLabel={t('copied', '✓ 복사됨')} />
+            </div>
+          </div>
           <div className="markdown-body p-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg min-h-[500px] overflow-y-auto custom-scrollbar" dangerouslySetInnerHTML={{ __html: html }} />
         </div>
       </div>
