@@ -54,6 +54,8 @@ export default function RootLayout({
   return (
     <html lang="ko" className="dark" suppressHydrationWarning>
       <head>
+        <meta name="google-adsense-account" content="ca-pub-1115459517870366" />
+
         {/* Google Analytics */}
         {GA_ID && (
           <>
