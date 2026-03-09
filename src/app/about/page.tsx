@@ -40,8 +40,11 @@ export default function AboutPage() {
 
         <h2 className="text-xl font-semibold text-[var(--color-text)] mt-8">문의</h2>
         <p>
-          버그 리포트, 기능 제안, 기타 문의사항이 있으시면 
-          GitHub Issues를 통해 알려주세요.
+          버그 리포트, 기능 제안, 기타 문의사항이 있으시면{' '}
+          <a href="mailto:leehoh3153@gmail.com" className="text-brand-500 hover:text-brand-400 transition-colors">
+            leehoh3153@gmail.com
+          </a>
+          으로 알려주세요.
         </p>
       </div>
     </main>

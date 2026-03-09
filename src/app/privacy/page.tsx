@@ -40,35 +40,67 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[var(--color-text)] mb-3">3. 쿠키 및 광고</h2>
-          <p>
-            본 서비스는 Google 애드센스를 사용하여 광고를 게재합니다. 
-            Google은 쿠키를 사용하여 이전 방문 기록을 기반으로 광고를 게재할 수 있습니다. 
-            Google 광고 쿠키는 Google 광고 설정 페이지에서 관리할 수 있습니다.
+          <h2 className="text-lg font-semibold text-[var(--color-text)] mb-3">3. 제3자 서비스</h2>
+          <p className="mb-3">본 서비스는 다음과 같은 제3자 서비스를 이용하며, 각 서비스는 쿠키를 사용할 수 있습니다:</p>
+          <ul className="space-y-3">
+            <li>
+              <span className="text-[var(--color-text)] font-medium">Google Analytics:</span>{' '}
+              사이트 이용 통계 분석 목적 (익명 데이터만 수집)
+            </li>
+            <li>
+              <span className="text-[var(--color-text)] font-medium">Google AdSense:</span>{' '}
+              광고 게재 및 광고 성과 측정 목적. Google은 쿠키를 사용하여 이전 방문 기록을 기반으로
+              광고를 게재할 수 있으며, Google 광고 쿠키는{' '}
+              <a
+                href="https://adssettings.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-500 hover:text-brand-400 transition-colors"
+              >
+                Google 광고 설정 페이지
+              </a>
+              에서 관리할 수 있습니다.
+            </li>
+          </ul>
+          <p className="mt-3">
+            각 서비스를 통해 수집되는 정보는 Google의 개인정보처리방침에 따라 처리됩니다.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-[var(--color-text)] mb-3">4. 제3자 제공</h2>
           <p>
-            DevDogu는 수집된 정보를 제3자에게 판매하거나 제공하지 않습니다. 
+            DevDogu는 수집된 정보를 제3자에게 판매하거나 제공하지 않습니다.
             단, 법률에 의해 요구되는 경우는 예외로 합니다.
           </p>
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[var(--color-text)] mb-3">5. 분석 도구</h2>
-          <p>
-            서비스 이용 현황 분석을 위해 Google Analytics를 사용할 수 있습니다. 
-            이를 통해 수집되는 정보는 Google의 개인정보처리방침에 따라 처리됩니다.
-          </p>
+          <h2 className="text-lg font-semibold text-[var(--color-text)] mb-3">5. 개인정보 보호 책임</h2>
+          <ul className="space-y-2">
+            <li><span className="text-[var(--color-text)] font-medium">담당:</span> DevDogu 운영팀</li>
+            <li>
+              <span className="text-[var(--color-text)] font-medium">이메일:</span>{' '}
+              <a href="mailto:leehoh3153@gmail.com" className="text-brand-500 hover:text-brand-400 transition-colors">
+                leehoh3153@gmail.com
+              </a>
+            </li>
+          </ul>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-[var(--color-text)] mb-3">6. 문의</h2>
           <p>
-            개인정보 관련 문의사항은 GitHub Issues를 통해 연락해주시기 바랍니다.
+            개인정보 관련 문의사항은 위 이메일을 통해 연락해주시기 바랍니다.
           </p>
+        </section>
+
+        <section className="pt-4 border-t border-[var(--color-border)]">
+          <h2 className="text-lg font-semibold text-[var(--color-text)] mb-3">부칙</h2>
+          <ul className="space-y-1">
+            <li>본 개인정보처리방침은 <span className="text-[var(--color-text)] font-medium">2026년 3월 9일</span>부터 시행됩니다.</li>
+            <li>이전 개인정보처리방침은 본 방침으로 대체됩니다.</li>
+          </ul>
         </section>
       </div>
     </main>
